@@ -13,5 +13,9 @@ export default new VueRouter({
     {
         path: "/me",
         component: Me
+    },
+    {
+        path: "/test",
+        component: () => require('../pages/Test')
     }]
 })
