@@ -2,7 +2,7 @@
   <div>
     <div class="cards">
       <div class="shadowContainer">
-        <p class="shadow" v-for="(box,index) in depth" :key="index"><br><br></p>
+        <p class="shadow" v-for="(box,index) in depth" :key="index"><br></p>
       </div>
     <p class="currentPara">{{ currentPara }}</p>
     </div>
@@ -11,6 +11,7 @@
         {{ para }}
       </p>
       <button class="add" @click="addPara">+</button>
+      <button class="back" @click="back">back</button>
       <textarea
         v-model="newPara"
         placeholder="Editing..."
@@ -88,7 +89,21 @@ export default {
       this.depth++
       this.treeIndexes.push(index)
       this.currentPara = this.nextParas[index]
-      this.nextParas = this.list.getNextElement(this.depth,this.treeIndexes) 
+      this.nextParas = this.list.getNextElement(this.depth,this.treeIndexes)
+    },
+    back(){
+      if(this.depth){
+        this.depth--;
+      }
+      if(this.treeIndexes.length>1){
+        this.treeIndexes.pop();
+      }
+      this.list.current = this.list.root
+      for (let i = 0; i < this.depth; i++) { //找到当前浏览位置
+            this.list.current = this.list.current.next[this.treeIndexes[i+1]]
+          }
+      this.currentPara = this.list.current.element;
+      this.nextParas = this.list.getNextElement(this.depth,this.treeIndexes);
     }
   },
 };
@@ -102,11 +117,16 @@ export default {
 .shadow{
   border-top: 1px black solid;
   width: 300px;
-  margin: -20px auto;
+  margin: -17px auto;
   border-radius: 10px;
 }
 .add {
   margin-top: 20px;
+  height: 30px;
+}
+.back{
+  margin-top: 20px;
+  margin-left: 10px;
   height: 30px;
 }
 .finish {
