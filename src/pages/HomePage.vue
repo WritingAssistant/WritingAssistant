@@ -27,14 +27,14 @@
 <script>
 export default {
   mounted() {
-    function List() { //定义结构树类，存储当前话题下全部数据及其结构(模拟数据库)
-      var Node = function (element) {
+    function Tree() { //定义结构树类，存储当前话题下全部数据及其结构(模拟数据库)
+      var Node = function (element) { //每个节点包含两部分：节点本身数据(字符串)和它的子节点(数组)
         this.element = element;
         this.next = [];
       };
-      this.root = null;
-      this.current = null;
-      this.append = function (element,depth,treeIndexes) {
+      this.root = null; //根节点
+      this.current = null; //指针节点，用于找到当前正在浏览的节点位置
+      this.append = function (element,depth,treeIndexes) { //append方法：1.生成新节点 2.查找当前正在浏览的节点位置 3.把该节点加到正在浏览节点的子节点数组里
         var node = new Node(element)
         if (!this.root) {
           this.root = node;
@@ -46,7 +46,7 @@ export default {
           this.current.next.push(node)
         }
       };
-      this.getNextElement = function(depth,treeIndexes){
+      this.getNextElement = function(depth,treeIndexes){ 
         var result = []
         this.current = this.root
           for (let i = 0; i < depth; i++) {
@@ -58,14 +58,15 @@ export default {
         return result
       }
     }
-    this.list = new List()
-    this.list.append(this.currentPara,this.depth,this.treeIndexes)
+    //初始化树结构
+    this.tree = new Tree() 
+    this.tree.append(this.currentPara,this.depth,this.treeIndexes)
   },
   components: {},
   data() {
     return {
-      depth:0,
-      treeIndexes:[0],
+      depth:0, //当前正在浏览的深度，用户每次点击子节点会加一
+      treeIndexes:[0], //当前正在浏览的节点位置信息(坐标)，用户每次点击子节点时会往该数组里添加一个数(即该子节点的下标)
       newPara: "",
       currentPara:
         "The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!",
@@ -79,8 +80,8 @@ export default {
       this.$refs.finish.style.display = "block";
     },
     submit() {
-      this.list.append(this.newPara,this.depth,this.treeIndexes)
-      this.nextParas = this.list.getNextElement(this.depth,this.treeIndexes) 
+      this.tree.append(this.newPara,this.depth,this.treeIndexes)
+      this.nextParas = this.tree.getNextElement(this.depth,this.treeIndexes) 
       this.$refs.editingArea.style.display = "none";
       this.$refs.finish.style.display = "none";
       this.newPara = "";
@@ -89,7 +90,7 @@ export default {
       this.depth++
       this.treeIndexes.push(index)
       this.currentPara = this.nextParas[index]
-      this.nextParas = this.list.getNextElement(this.depth,this.treeIndexes)
+      this.nextParas = this.tree.getNextElement(this.depth,this.treeIndexes)
     },
     back(){
       if(this.depth){
@@ -98,12 +99,12 @@ export default {
       if(this.treeIndexes.length>1){
         this.treeIndexes.pop();
       }
-      this.list.current = this.list.root
+      this.tree.current = this.tree.root
       for (let i = 0; i < this.depth; i++) { //找到当前浏览位置
-            this.list.current = this.list.current.next[this.treeIndexes[i+1]]
+            this.tree.current = this.tree.current.next[this.treeIndexes[i+1]]
           }
-      this.currentPara = this.list.current.element;
-      this.nextParas = this.list.getNextElement(this.depth,this.treeIndexes);
+      this.currentPara = this.tree.current.element;
+      this.nextParas = this.tree.getNextElement(this.depth,this.treeIndexes);
     }
   },
 };
