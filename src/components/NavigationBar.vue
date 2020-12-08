@@ -18,7 +18,12 @@ export default {
                 },
                 {
                     text:"Me",
-                    path:"/me"
+                    path:"/me",
+                    requireAuth: true,
+                },
+                {
+                    text:"Login",
+                    path:"/login"
                 }
             ],
         }

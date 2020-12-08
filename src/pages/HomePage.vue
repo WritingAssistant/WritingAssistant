@@ -8,16 +8,20 @@
     </div>
     <div class="nextParas">
       <div class="swiper-container">
-        <div class="swiper-wrapper">
+         
+        <div class="swiper-wrapper"  >
           <div
+          v-for="(para, index) in nextParas" :key="index"
             class="swiper-slide"
-            v-for="(para, index) in nextParas"
-            @click="choosePara(index)"
-            :key="index"
-          >
-            {{ para }}
-          </div>
+        ><span  v-if="para!== edited"  @click="modifyPara(para)" > {{ para }}</span>
+           <input v-else v-model="para.text" @keyup.enter="doneEditing()" type="text" placeholder="press enter to finish editing!" />
+            <div>
+              <span>{{num}}<img @click="like($event)" class="like"></span>
+              <button class="add" @click="choosePara(index)">Reply</button></div>
+           </div>
+          
         </div>
+       
       </div>
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
@@ -87,7 +91,7 @@ export default {
     nextParas() {
       this.$nextTick(() => {
         new Swiper(".swiper-container", {
-          loop:true,
+          loop: true,
           navigation: {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
@@ -105,6 +109,8 @@ export default {
       currentPara:
         "The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!",
       nextParas: [],
+      edited:null,
+      num:0,
     };
   },
 
@@ -141,13 +147,31 @@ export default {
       this.currentPara = this.tree.current.element;
       this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes);
     },
-  },
+    modifyPara(para) {
+     this.edited=para;
+    },
+    doneEditing: function() {
+            this.edited = null;
+          },
+    like(e){
+       if (e.target.className.indexOf("like-selected") == -1) {
+                            e.target.className = "like-selected"; //切换按钮样式
+                            this.num++;
+                        } else {
+                            e.target.className = "like";//切换按钮样式
+                            this.num--;
+                        }
+                 },
+        
+    
+  }
 };
 </script>
 
 <style>
 .swiper-container {
   width: 200px;
+  top: 20px;
 }
 
 .swiper-slide {
@@ -195,5 +219,18 @@ textarea {
   margin: 30px auto;
   word-break: normal;
   border-radius: 10px;
+}
+
+.like{
+  height:20px;
+  width:20px;
+  background: url(../../assets/like1.png) no-repeat;
+  background-size:100%
+}
+.like-selected{
+   height:20px;
+  width:20px;
+  background: url(../../assets/like.png) no-repeat;
+  background-size:100%
 }
 </style>
