@@ -12,7 +12,7 @@ router.post('/login/register',(req,res) => {
             if(data.length > 0){
                 res.send({'status': 1001, 'message': '该用户名已经注册！'});
             }else{
-                let newName = new models.Login({
+                let newName = new models.login({
                     name : req.body.name,
                     password : req.body.password
                 });
