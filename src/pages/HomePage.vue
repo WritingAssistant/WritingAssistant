@@ -14,7 +14,7 @@
           v-for="(para, index) in nextParas" :key="index"
             class="swiper-slide"
         ><span  v-if="para!== edited"     @dblclick="modifyPara(para)" > {{ para }}</span>
-           <input v-else v-model="para.text" @keyup.enter="doneEditing()" type="text" placeholder="press enter to finish editing!" />
+           <input v-else v-model="editedpara" @keyup.enter="doneEditing()" type="text" placeholder="press enter to finish editing!" />
             <div>
               <span>{{num}}<img @click="like($event)" class="like"></span>
               
@@ -117,7 +117,8 @@ export default {
       nextParas: [],
       edited:null,
       num:0,
-      storyLine:["The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!"]
+      storyLine:["The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!"],
+      editedpara:""
     };
   },
 
@@ -168,7 +169,7 @@ export default {
      
     },
     doneEditing() {
-              this.nextParas=this.edited
+              this.nextParas=this.editedpara
               },
     like(e){
        if (e.target.className.indexOf("like-selected") == -1) {
