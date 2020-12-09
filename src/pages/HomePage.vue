@@ -13,11 +13,13 @@
           <div
           v-for="(para, index) in nextParas" :key="index"
             class="swiper-slide"
-        ><span  v-if="para!== edited"  @click="modifyPara(para)" > {{ para }}</span>
+        ><span  v-if="para!== edited"     @dblclick="modifyPara(para)" > {{ para }}</span>
            <input v-else v-model="para.text" @keyup.enter="doneEditing()" type="text" placeholder="press enter to finish editing!" />
             <div>
               <span>{{num}}<img @click="like($event)" class="like"></span>
+              
               <button class="add" @click="choosePara(index)">Reply</button></div>
+              <button @click="changeToComments(index)">review</button>
            </div>
           
         </div>
@@ -37,6 +39,10 @@
       ></textarea>
       <button class="finish" @click="submit" ref="finish">Finish</button>
     </div>
+    <div class="storyLine" ref="storyLine" >
+    <div class="storycard" v-for="(story,index) in storyLine" :key="index">{{story}}</div>
+    </div>
+    <button @click="storyLineShow()" >storyLine</button>
   </div>
 </template>
 
@@ -111,6 +117,7 @@ export default {
       nextParas: [],
       edited:null,
       num:0,
+      storyLine:["The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!"]
     };
   },
 
@@ -130,7 +137,16 @@ export default {
       this.depth++;
       this.treeIndexes.push(index);
       this.currentPara = this.nextParas[index];
-      this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes);
+      this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes)
+      console.log(this.currentPara)
+      this.storyLine.push(this.currentPara)
+      console.log(this.storyLine);
+    },
+    changeToComments(index){
+      this.chosenpara = 
+       this.$router.push({path:'/comments',query:{
+        Chosentest:this.nextParas[index]
+      }})
     },
     back() {
       if (this.depth) {
@@ -148,11 +164,12 @@ export default {
       this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes);
     },
     modifyPara(para) {
-     this.edited=para;
+     this.edited=para
+     
     },
-    doneEditing: function() {
-            this.edited = null;
-          },
+    doneEditing() {
+              this.nextParas=this.edited
+              },
     like(e){
        if (e.target.className.indexOf("like-selected") == -1) {
                             e.target.className = "like-selected"; //切换按钮样式
@@ -162,7 +179,9 @@ export default {
                             this.num--;
                         }
                  },
-        
+    storyLineShow(){
+      this.$refs.storyLine.style.display = "block"
+    }
     
   }
 };
@@ -232,5 +251,15 @@ textarea {
   width:20px;
   background: url(../../assets/like.png) no-repeat;
   background-size:100%
+}
+.storycard{
+  width:200px;
+  float: left;
+  border:1px solid black;
+  margin:3%;
+  border-radius: 10px;
+}
+.storyLine{
+  display:none;
 }
 </style>
