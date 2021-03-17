@@ -4,6 +4,7 @@ import HomePage from "../pages/HomePage"
 import Me from "../pages/Me"
 import login from "../pages/login"
 import comments from "../pages/comments"
+import rank from "../pages/rank"
 
 Vue.use(VueRouter)
 
@@ -22,6 +23,10 @@ export default new VueRouter({
     },    {
         path:"/comments",
         component:comments
+    },
+    {
+        path:"/rank",
+        component:rank
     }
 ]
 })

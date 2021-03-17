@@ -7,7 +7,9 @@
 </template>
 
 <script>
+
 export default {
+    
     data(){
         return {
             ActiveIndex:0,
@@ -24,10 +26,19 @@ export default {
                 {
                     text:"Login",
                     path:"/login"
+                },
+                                {
+                    text:"comments",
+                    path:"/comments"
+                },
+                                {
+                    text:"rank",
+                    path:"/rank"
                 }
             ],
         }
     },
+  
     methods: {
         ChangeActive(index) {
             this.ActiveIndex = index

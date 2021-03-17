@@ -13,53 +13,37 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name:"login",
      data(){
         return{
             msg: "Let's use your imagination to make great works!",
-            name:"",
+            username:"",
             password:"",
-            array:"",
             nameId: "",
+            data:{}
         }
-     },
-      methods:{
+        },
+    methods:{
         login(){
-      let params = {
-                name: this.name,
-                password: this.password
+            let params={
+                username:this.username,
+                password:this.password
             }
-             this.$http.post('/login/login',params).then((res)=>{
-                console.log(res)
-                if(res.data.status == 1000){
-                   this.nameId = res.data.data[0]._id
+        axios.get('http://localhost:3000/index',params).then((res)=>{
+            
+            console.log(res)
+            if(res.data.status == 3000){
+                   this.nameId = res.data.data[0].id
                 }else{
                     alert(res.data.message)
                 }
-            }).catch((err)=>{
-                console.log(err)
-            })
-        },
-         register(){
-            let params = {
-                name: this.name,
-                password: this.password
-            }
-            this.$http.post('/login/register',params).then((res)=>{
-                console.log(res)
-                if(res.data.status == 1000){
-                   alert(res.data.message)
-                }else{
-                    alert(res.data.message)
-                }
-            }).catch((err)=>{
-                console.log(err)
-            })
-        },
-        }
-      }
-
+        }).catch((err)=>{
+            console.log(err);
+        });
+    }}
+    }
 </script>
 
 <style scoped>
