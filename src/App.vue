@@ -19,5 +19,6 @@ export default {
 <style>
   #app{
     position:relative;
+    padding:25px;
   }
 </style>

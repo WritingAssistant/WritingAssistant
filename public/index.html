@@ -11,7 +11,23 @@
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
+    <div class="bg"></div>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
 </html>
+<style>
+  *{
+    margin:0;
+  }
+html,body{
+  height: 100%
+}
+.bg{
+  position:absolute;
+  height:100%;
+  width:100%;
+  background-image: url("background.png");
+  filter: blur(5px);
+}
+</style>

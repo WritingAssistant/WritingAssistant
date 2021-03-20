@@ -8,22 +8,30 @@
     </div>
     <div class="nextParas">
       <div class="swiper-container">
-         
-        <div class="swiper-wrapper"  >
+        <div class="swiper-wrapper">
           <div
-          v-for="(para, index) in nextParas" :key="index"
+            v-for="(para, index) in nextParas"
+            :key="index"
             class="swiper-slide"
-        ><span  v-if="para!== edited"     @dblclick="modifyPara(para)" > {{ para }}</span>
-           <input v-else v-model="editedpara" @keyup.enter="doneEditing(index)" type="text" placeholder="press enter to finish editing!" />
+          >
+            <span v-if="para !== edited" @dblclick="modifyPara(para)">
+              {{ para }}</span
+            >
+            <input
+              v-else
+              v-model="editedpara"
+              @keyup.enter="doneEditing(index)"
+              type="text"
+              placeholder="press enter to finish editing!"
+            />
             <div>
-              <span>{{num}}<img @click="like($event)" class="like"></span>
-              
-              <button class="add" @click="choosePara(index)">Reply</button></div>
-              <button @click="changeToComments(index)">review</button>
-           </div>
-          
+              <span>{{ num }}<img @click="like($event)" class="like" /></span>
+
+              <button class="add" @click="choosePara(index)">Reply</button>
+            </div>
+            <button @click="changeToComments(index)">Comment</button>
+          </div>
         </div>
-       
       </div>
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
@@ -39,10 +47,12 @@
       ></textarea>
       <button class="finish" @click="submit" ref="finish">Finish</button>
     </div>
-    <div class="storyLine" ref="storyLine" >
-    <div class="storycard" v-for="(story,index) in storyLine" :key="index">{{story}}</div>
+    <div class="storyLine" ref="storyLine">
+      <div class="storycard" v-for="(story, index) in storyLine" :key="index">
+        {{ story }}
+      </div>
     </div>
-    <button @click="storyLineShow()" >storyLine</button>
+    <button @click="storyLineShow()">storyLine</button>
   </div>
 </template>
 
@@ -115,10 +125,12 @@ export default {
       currentPara:
         "The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!",
       nextParas: [],
-      edited:null,
-      num:0,
-      storyLine:["The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!"],
-      editedpara:""
+      edited: null,
+      num: 0,
+      storyLine: [
+        "The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!",
+      ],
+      editedpara: "",
     };
   },
 
@@ -138,16 +150,18 @@ export default {
       this.depth++;
       this.treeIndexes.push(index);
       this.currentPara = this.nextParas[index];
-      this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes)
-      console.log(this.currentPara)
-      this.storyLine.push(this.currentPara)
+      this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes);
+      console.log(this.currentPara);
+      this.storyLine.push(this.currentPara);
       console.log(this.storyLine);
     },
-    changeToComments(index){
-      this.chosenpara = 
-       this.$router.push({path:'/comments',query:{
-        Chosentest:this.nextParas[index]
-      }})
+    changeToComments(index) {
+      this.chosenpara = this.$router.push({
+        path: "/comments",
+        query: {
+          Chosentest: this.nextParas[index],
+        },
+      });
     },
     back() {
       if (this.depth) {
@@ -165,29 +179,27 @@ export default {
       this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes);
     },
     modifyPara(para) {
-     this.edited=para
-     
+      this.edited = para;
     },
     doneEditing(index) {
-              this.nextParas[index]=this.editedpara
-              
-              this.edited=null
-              console.log(this.nextParas)
-              },
-    like(e){
-       if (e.target.className.indexOf("like-selected") == -1) {
-                            e.target.className = "like-selected"; //切换按钮样式
-                            this.num++;
-                        } else {
-                            e.target.className = "like";//切换按钮样式
-                            this.num--;
-                        }
-                 },
-    storyLineShow(){
-      this.$refs.storyLine.style.display = "block"
-    }
-    
-  }
+      this.nextParas[index] = this.editedpara;
+
+      this.edited = null;
+      console.log(this.nextParas);
+    },
+    like(e) {
+      if (e.target.className.indexOf("like-selected") == -1) {
+        e.target.className = "like-selected"; //切换按钮样式
+        this.num++;
+      } else {
+        e.target.className = "like"; //切换按钮样式
+        this.num--;
+      }
+    },
+    storyLineShow() {
+      this.$refs.storyLine.style.display = "block";
+    },
+  },
 };
 </script>
 
@@ -244,26 +256,26 @@ textarea {
   border-radius: 10px;
 }
 
-.like{
-  height:20px;
-  width:20px;
+.like {
+  height: 20px;
+  width: 20px;
   background: url(../../assets/like1.png) no-repeat;
-  background-size:100%
+  background-size: 100%;
 }
-.like-selected{
-   height:20px;
-  width:20px;
+.like-selected {
+  height: 20px;
+  width: 20px;
   background: url(../../assets/like.png) no-repeat;
-  background-size:100%
+  background-size: 100%;
 }
-.storycard{
-  width:200px;
+.storycard {
+  width: 200px;
   float: left;
-  border:1px solid black;
-  margin:3%;
+  border: 1px solid black;
+  margin: 3%;
   border-radius: 10px;
 }
-.storyLine{
-  display:none;
+.storyLine {
+  display: none;
 }
 </style>
