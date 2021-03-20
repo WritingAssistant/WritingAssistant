@@ -23,14 +23,7 @@ export default {
                     path:"/me",
                     requireAuth: true,
                 },
-                {
-                    text:"Login",
-                    path:"/login"
-                },
-                                {
-                    text:"comments",
-                    path:"/comments"
-                },
+            
                                 {
                     text:"rank",
                     path:"/rank"
