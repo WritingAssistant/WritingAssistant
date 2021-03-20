@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <NavigationBar></NavigationBar>
+    <NavigationBar v-show="$route.meta.showNavigation"></NavigationBar>
     <router-view></router-view>
   </div>
 </template>

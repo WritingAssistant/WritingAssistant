@@ -12,22 +12,35 @@ Vue.use(VueRouter)
 
     const routes= [{
         path: "/homepage",
-        component: HomePage
+        component: HomePage,
+        meta: { //允许自定义对象
+            showNavigation: true
+        }
     },
     {
         path: "/me",
-        component: Me
+        component: Me,
+        meta: {
+            showNavigation: true
+        }
     },
     {
         path:"/",
         component:login
-    },    {
+    },
+    {
         path:"/comments",
-        component:comments
+        component:comments,
+        meta: {
+            showNavigation: true
+        }
     },
     {
         path:"/rank",
-        component:rank
+        component:rank,
+        meta: {
+            showNavigation: true
+        }
     }
     ]
 const router = new VueRouter({
