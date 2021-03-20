@@ -8,6 +8,7 @@
 <script>
 import NavigationBar from './components/NavigationBar.vue'
 
+
 export default {
   name: 'App',
   components: {
@@ -19,5 +20,6 @@ export default {
 <style>
   #app{
     position:relative;
+    padding:25px;
   }
 </style>

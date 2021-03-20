@@ -6,10 +6,11 @@ import login from "../pages/login"
 import comments from "../pages/comments"
 import rank from "../pages/rank"
 
+
 Vue.use(VueRouter)
 
-export default new VueRouter({
-    routes: [{
+
+    const routes= [{
         path: "/homepage",
         component: HomePage
     },
@@ -18,7 +19,7 @@ export default new VueRouter({
         component: Me
     },
     {
-        path:"/login",
+        path:"/",
         component:login
     },    {
         path:"/comments",
@@ -28,5 +29,14 @@ export default new VueRouter({
         path:"/rank",
         component:rank
     }
-]
-})
+    ]
+const router = new VueRouter({
+   mode: 'history',
+    base: process.env.BASE_URL,
+    routes
+  })
+  
+
+
+
+export default router

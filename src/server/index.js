@@ -1,24 +1,28 @@
-var express =require('express');
-var router=express.Router();
-var mysql=require('mysql');
+const bodyParser = require('body-parser');
+const express = require('express');
+const cors = require('cors')
+const app = express();
 
-var connection =mysql.createConnection({
-    host :'localhost',
-    user:'Root',
-    password:'123456',
-    database:'graduate'
+const Api = require('./api/Api.js');
+
+
+app.use(bodyParser.urlencoded({ extended: false }));
+// 解析 application/json
+app.use(bodyParser.json());
+
+app.use(cors());
+
+//设置跨域请求
+app.all('*', function (req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+	res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+	res.header("X-Powered-By", ' 3.2.1')
+	res.header("Content-Type", "application/json;charset=utf-8");
+	next();
 });
 
-router.get ('../pages/login',function(req,res,next){
-    connection.connect();
-    connection.query('SELECT * FROM graduate',function(error,results,field){
-        if(error)throw error;
-        console.log(results);
-        res.setHeader("Access-Control-Allow-Origin","*");
-        res.send(results);
-    }
-    );
-    connection.end();
-});
+app.use("/api/user",Api);
 
-module.exports=router;
+app.listen(3000);
+console.log("启动成功");

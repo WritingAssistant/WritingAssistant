@@ -1,7 +1,7 @@
 <template>
     <div class="navigationbar">
         <a v-for="(item,index) in items" :key="index" @click="ChangeActive(index)">
-            <span>{{item.text}}</span>
+            <span :class="index==ActiveIndex?'activated':'normal'">{{item.text}}</span>
         </a>
     </div>
 </template>
@@ -23,14 +23,7 @@ export default {
                     path:"/me",
                     requireAuth: true,
                 },
-                {
-                    text:"Login",
-                    path:"/login"
-                },
-                                {
-                    text:"comments",
-                    path:"/comments"
-                },
+            
                                 {
                     text:"rank",
                     path:"/rank"
@@ -53,9 +46,14 @@ export default {
         cursor:pointer;
         margin: 0 20px;
     }
+    a:hover{
+        color: blue;
+    }
+    .activated{
+        text-decoration: underline;
+    }
     .navigationbar{
         width:100%;
-        border: 1px black solid;
         display: flex;
         justify-content: center;
     }

@@ -8,10 +8,10 @@
     </div>
     <div class="nextParas">
       <div class="swiper-container">
-         
-        <div class="swiper-wrapper"  >
-          <div
-          v-for="(para, index) in nextParas" :key="index"
+        <div class="swiper-wrapper">
+         <div
+            v-for="(para, index) in nextParas"
+            :key="index"
             class="swiper-slide"
         ><div  v-if="!edited"     @dblclick="modifyPara(para)" > {{ para }}</div>
            <textarea v-else v-model="editedpara" @keyup.enter="doneEditing(index)" cols="25"  rows="10"/>
@@ -19,9 +19,8 @@
               <span>{{num}}<img @click="like($event)" class="like"></span>
               
               <button class="add" @click="choosePara(index)">See this line</button>
-              <button @click="changeToComments(index)">review</button></div>
-           </div>
-          
+              <button @click="changeToComments(index)">Comment</button></div>
+           </div>         
         </div>
       </div>
       <div class="swiper-button-prev"></div>
@@ -42,7 +41,7 @@
     <div class="storyLine" ref="storyLine" v-if="showLine">
     <div class="storycard" v-for="(story,index) in storyLine" :key="index">{{story}}</div>
     </div>
-    <button @click="storyLineShow()" >storyLine</button>
+    <button @click="storyLineShow()">storyLine</button>
   </div>
 </template>
 
@@ -142,16 +141,18 @@ export default {
       this.depth++;
       this.treeIndexes.push(index);
       this.currentPara = this.nextParas[index];
-      this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes)
-      console.log(this.currentPara)
-      this.storyLine.push(this.currentPara)
+      this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes);
+      console.log(this.currentPara);
+      this.storyLine.push(this.currentPara);
       console.log(this.storyLine);
     },
-    changeToComments(index){
-      this.chosenpara = 
-       this.$router.push({path:'/comments',query:{
-        Chosentest:this.nextParas[index]
-      }})
+    changeToComments(index) {
+      this.chosenpara = this.$router.push({
+        path: "/comments",
+        query: {
+          Chosentest: this.nextParas[index],
+        },
+      });
     },
     back() {
       if (this.depth) {
@@ -252,23 +253,26 @@ export default {
   border-radius: 10px;
 }
 
-.like{
-  height:20px;
-  width:20px;
+.like {
+  height: 20px;
+  width: 20px;
   background: url(../../assets/like1.png) no-repeat;
-  background-size:100%
+  background-size: 100%;
 }
-.like-selected{
-   height:20px;
-  width:20px;
+.like-selected {
+  height: 20px;
+  width: 20px;
   background: url(../../assets/like.png) no-repeat;
-  background-size:100%
+  background-size: 100%;
 }
-.storycard{
-  width:200px;
+.storycard {
+  width: 200px;
   float: left;
-  border:1px solid black;
-  margin:3%;
+  border: 1px solid black;
+  margin: 3%;
   border-radius: 10px;
+}
+.storyLine {
+  display: none;
 }
 </style>
