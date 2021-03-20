@@ -13,17 +13,16 @@
           <div
           v-for="(para, index) in nextParas" :key="index"
             class="swiper-slide"
-        ><span  v-if="para!== edited"     @dblclick="modifyPara(para)" > {{ para }}</span>
-           <input v-else v-model="editedpara" @keyup.enter="doneEditing(index)" type="text" placeholder="press enter to finish editing!" />
+        ><div  v-if="!edited"     @dblclick="modifyPara(para)" > {{ para }}</div>
+           <textarea v-else v-model="editedpara" @keyup.enter="doneEditing(index)" cols="25"  rows="10"/>
             <div>
               <span>{{num}}<img @click="like($event)" class="like"></span>
               
-              <button class="add" @click="choosePara(index)">Reply</button></div>
-              <button @click="changeToComments(index)">review</button>
+              <button class="add" @click="choosePara(index)">See this line</button>
+              <button @click="changeToComments(index)">review</button></div>
            </div>
           
         </div>
-       
       </div>
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
@@ -31,6 +30,7 @@
       <button class="add" @click="addPara">+</button>
       <button class="back" @click="back">back</button>
       <textarea
+        class="addEdit"
         v-model="newPara"
         placeholder="Editing..."
         cols="100"
@@ -39,7 +39,7 @@
       ></textarea>
       <button class="finish" @click="submit" ref="finish">Finish</button>
     </div>
-    <div class="storyLine" ref="storyLine" >
+    <div class="storyLine" ref="storyLine" v-if="showLine">
     <div class="storycard" v-for="(story,index) in storyLine" :key="index">{{story}}</div>
     </div>
     <button @click="storyLineShow()" >storyLine</button>
@@ -97,7 +97,10 @@ export default {
     nextParas() {
       this.$nextTick(() => {
         new Swiper(".swiper-container", {
-          loop: true,
+          loop: false,
+          pagination: {
+            el: '.swiper-pagination',
+          },
           navigation: {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
@@ -115,9 +118,10 @@ export default {
       currentPara:
         "The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!",
       nextParas: [],
-      edited:null,
+      edited:false,
       num:0,
       storyLine:["The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!"],
+      showLine:false,
       editedpara:""
     };
   },
@@ -156,6 +160,9 @@ export default {
       if (this.treeIndexes.length > 1) {
         this.treeIndexes.pop();
       }
+      if (this.storyLine.length > 1) {
+        this.storyLine.pop();
+      }
       this.tree.current = this.tree.root;
       for (let i = 0; i < this.depth; i++) {
         //找到当前浏览位置
@@ -165,13 +172,14 @@ export default {
       this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes);
     },
     modifyPara(para) {
-     this.edited=para
+      this.editedpara = para;
+      this.edited=!this.edited
      
     },
     doneEditing(index) {
               this.nextParas[index]=this.editedpara
               
-              this.edited=null
+              this.edited=!this.edited
               console.log(this.nextParas)
               },
     like(e){
@@ -184,7 +192,7 @@ export default {
                         }
                  },
     storyLineShow(){
-      this.$refs.storyLine.style.display = "block"
+      this.showLine = !this.showLine;
     }
     
   }
@@ -224,7 +232,7 @@ export default {
   position: fixed;
   bottom: 21px;
 }
-textarea {
+.addEdit {
   display: none;
   position: fixed;
   border-radius: 10px;
@@ -262,8 +270,5 @@ textarea {
   border:1px solid black;
   margin:3%;
   border-radius: 10px;
-}
-.storyLine{
-  display:none;
 }
 </style>
