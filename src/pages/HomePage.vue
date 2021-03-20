@@ -14,7 +14,8 @@
             :key="index"
             class="swiper-slide"
         ><div  v-if="!edited"     @dblclick="modifyPara(para)" > {{ para }}</div>
-           <textarea v-else v-model="editedpara" @keyup.enter="doneEditing(index)" cols="25"  rows="10"/>
+           <textarea v-else v-model="editedpara" @keyup.enter="doneEditing(index)" @blur="doneEditing(index)" cols="25"  rows="10"/>
+           <button class="del" @click="del()" v-if="edited">X</button>
             <div>
               <span>{{num}}<img @click="like($event)" class="like"></span>
               
@@ -87,6 +88,13 @@ export default {
         }
         return result;
       };
+      this.change = function(newtext,depth,treeIndexes,index){
+        this.current = this.root;
+        for (let i = 0; i < depth; i++) {
+          this.current = this.current.next[treeIndexes[i + 1]];
+        }
+        this.current.next[index].element = newtext;
+      }
     }
     //初始化树结构
     this.tree = new Tree();
@@ -178,11 +186,14 @@ export default {
      
     },
     doneEditing(index) {
-              this.nextParas[index]=this.editedpara
-              
-              this.edited=!this.edited
-              console.log(this.nextParas)
+              this.tree.change(this.editedpara,this.depth,this.treeIndexes,index);
+              this.nextParas[index] = this.editedpara;
+              this.edited=!this.edited;
+              console.log(this.nextParas);
               },
+    del(){
+      this.editedpara = "";
+    },
     like(e){
        if (e.target.className.indexOf("like-selected") == -1) {
                             e.target.className = "like-selected"; //切换按钮样式
@@ -244,7 +255,12 @@ export default {
   justify-content: center;
   flex-wrap: wrap;
 }
-
+.del{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin-left: -20px;
+}
 .currentPara {
   border: 1px black solid;
   width: 300px;
@@ -271,8 +287,5 @@ export default {
   border: 1px solid black;
   margin: 3%;
   border-radius: 10px;
-}
-.storyLine {
-  display: none;
 }
 </style>
