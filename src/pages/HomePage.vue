@@ -9,28 +9,19 @@
     <div class="nextParas">
       <div class="swiper-container">
         <div class="swiper-wrapper">
-          <div
+         <div
             v-for="(para, index) in nextParas"
             :key="index"
             class="swiper-slide"
-          >
-            <span v-if="para !== edited" @dblclick="modifyPara(para)">
-              {{ para }}</span
-            >
-            <input
-              v-else
-              v-model="editedpara"
-              @keyup.enter="doneEditing(index)"
-              type="text"
-              placeholder="press enter to finish editing!"
-            />
+        ><div  v-if="!edited"     @dblclick="modifyPara(para)" > {{ para }}</div>
+           <textarea v-else v-model="editedpara" @keyup.enter="doneEditing(index)" @blur="doneEditing(index)" cols="25"  rows="10"/>
+           <button class="del" @click="del()" v-if="edited">X</button>
             <div>
-              <span>{{ num }}<img @click="like($event)" class="like" /></span>
-
-              <button class="add" @click="choosePara(index)">Reply</button>
-            </div>
-            <button @click="changeToComments(index)">Comment</button>
-          </div>
+              <span>{{num}}<img @click="like($event)" class="like"></span>
+              
+              <button class="add" @click="choosePara(index)">See this line</button>
+              <button @click="changeToComments(index)">Comment</button></div>
+           </div>         
         </div>
       </div>
       <div class="swiper-button-prev"></div>
@@ -39,6 +30,7 @@
       <button class="add" @click="addPara">+</button>
       <button class="back" @click="back">back</button>
       <textarea
+        class="addEdit"
         v-model="newPara"
         placeholder="Editing..."
         cols="100"
@@ -47,10 +39,8 @@
       ></textarea>
       <button class="finish" @click="submit" ref="finish">Finish</button>
     </div>
-    <div class="storyLine" ref="storyLine">
-      <div class="storycard" v-for="(story, index) in storyLine" :key="index">
-        {{ story }}
-      </div>
+    <div class="storyLine" ref="storyLine" v-if="showLine">
+    <div class="storycard" v-for="(story,index) in storyLine" :key="index">{{story}}</div>
     </div>
     <button @click="storyLineShow()">storyLine</button>
   </div>
@@ -98,6 +88,13 @@ export default {
         }
         return result;
       };
+      this.change = function(newtext,depth,treeIndexes,index){
+        this.current = this.root;
+        for (let i = 0; i < depth; i++) {
+          this.current = this.current.next[treeIndexes[i + 1]];
+        }
+        this.current.next[index].element = newtext;
+      }
     }
     //初始化树结构
     this.tree = new Tree();
@@ -107,7 +104,10 @@ export default {
     nextParas() {
       this.$nextTick(() => {
         new Swiper(".swiper-container", {
-          loop: true,
+          loop: false,
+          pagination: {
+            el: '.swiper-pagination',
+          },
           navigation: {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
@@ -125,12 +125,11 @@ export default {
       currentPara:
         "The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!",
       nextParas: [],
-      edited: null,
-      num: 0,
-      storyLine: [
-        "The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!",
-      ],
-      editedpara: "",
+      edited:false,
+      num:0,
+      storyLine:["The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!"],
+      showLine:false,
+      editedpara:""
     };
   },
 
@@ -170,6 +169,9 @@ export default {
       if (this.treeIndexes.length > 1) {
         this.treeIndexes.pop();
       }
+      if (this.storyLine.length > 1) {
+        this.storyLine.pop();
+      }
       this.tree.current = this.tree.root;
       for (let i = 0; i < this.depth; i++) {
         //找到当前浏览位置
@@ -179,27 +181,33 @@ export default {
       this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes);
     },
     modifyPara(para) {
-      this.edited = para;
+      this.editedpara = para;
+      this.edited=!this.edited
+     
     },
     doneEditing(index) {
-      this.nextParas[index] = this.editedpara;
-
-      this.edited = null;
-      console.log(this.nextParas);
+              this.tree.change(this.editedpara,this.depth,this.treeIndexes,index);
+              this.nextParas[index] = this.editedpara;
+              this.edited=!this.edited;
+              console.log(this.nextParas);
+              },
+    del(){
+      this.editedpara = "";
     },
-    like(e) {
-      if (e.target.className.indexOf("like-selected") == -1) {
-        e.target.className = "like-selected"; //切换按钮样式
-        this.num++;
-      } else {
-        e.target.className = "like"; //切换按钮样式
-        this.num--;
-      }
-    },
-    storyLineShow() {
-      this.$refs.storyLine.style.display = "block";
-    },
-  },
+    like(e){
+       if (e.target.className.indexOf("like-selected") == -1) {
+                            e.target.className = "like-selected"; //切换按钮样式
+                            this.num++;
+                        } else {
+                            e.target.className = "like";//切换按钮样式
+                            this.num--;
+                        }
+                 },
+    storyLineShow(){
+      this.showLine = !this.showLine;
+    }
+    
+  }
 };
 </script>
 
@@ -236,7 +244,7 @@ export default {
   position: fixed;
   bottom: 21px;
 }
-textarea {
+.addEdit {
   display: none;
   position: fixed;
   border-radius: 10px;
@@ -247,7 +255,12 @@ textarea {
   justify-content: center;
   flex-wrap: wrap;
 }
-
+.del{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin-left: -20px;
+}
 .currentPara {
   border: 1px black solid;
   width: 300px;
@@ -274,8 +287,5 @@ textarea {
   border: 1px solid black;
   margin: 3%;
   border-radius: 10px;
-}
-.storyLine {
-  display: none;
 }
 </style>
