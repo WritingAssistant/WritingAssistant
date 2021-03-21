@@ -1,48 +1,57 @@
 <template>
-  <div>
-    <div class="cards">
-      <div class="shadowContainer">
-        <p class="shadow" v-for="(box, index) in depth" :key="index"><br /></p>
+  <div class="homepage">
+    <div class="storyLineContainer">
+      <button class="storyLinebtn btn btn-default" @click="storyLineShow()">StoryLine</button>
+      <div class="storyLine" ref="storyLine" v-if="showLine">
+        <div class="storycard" v-for="(story,index) in storyLine" :key="index">
+          {{story}}
+        </div>
       </div>
-      <p class="currentPara">{{ currentPara }}</p>
+    </div>
+    <div class="currentContainer">
+      <button class="back btn btn-default" @click="back">Go Back</button>
+      <div class="cards">
+        <div class="shadowContainer">
+          <p class="shadow" v-for="(box, index) in depth" :key="index"><br /></p>
+        </div>
+        <p class="currentPara">{{ currentPara }}</p>
+      </div>
+      <button class="add btn btn-default" @click="addPara">Follow</button>
     </div>
     <div class="nextParas">
+      <div class="swiper-button-prev"></div>
       <div class="swiper-container">
         <div class="swiper-wrapper">
          <div
             v-for="(para, index) in nextParas"
             :key="index"
             class="swiper-slide"
-        ><div  v-if="!edited"     @dblclick="modifyPara(para)" > {{ para }}</div>
+        ><div  v-if="!edited"  class="nextPara"   @dblclick="modifyPara(para)" > {{ para }}</div>
            <textarea v-else v-model="editedpara" @keyup.enter="doneEditing(index)" @blur="doneEditing(index)" cols="25"  rows="10"/>
            <button class="del" @click="del()" v-if="edited">X</button>
             <div>
               <span>{{num}}<img @click="like($event)" class="like"></span>
               
-              <button class="add" @click="choosePara(index)">See this line</button>
+              <button class="enterNext" @click="choosePara(index)">See this line</button>
               <button @click="changeToComments(index)">Comment</button></div>
            </div>         
         </div>
       </div>
-      <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
-
-      <button class="add" @click="addPara">+</button>
-      <button class="back" @click="back">back</button>
+    </div>
+    <div class="editContainer">
       <textarea
         class="addEdit"
         v-model="newPara"
         placeholder="Editing..."
-        cols="100"
+        cols="60"
         rows="10"
         ref="editingArea"
       ></textarea>
       <button class="finish" @click="submit" ref="finish">Finish</button>
     </div>
-    <div class="storyLine" ref="storyLine" v-if="showLine">
-    <div class="storycard" v-for="(story,index) in storyLine" :key="index">{{story}}</div>
-    </div>
-    <button @click="storyLineShow()">storyLine</button>
+    
+    
   </div>
 </template>
 
@@ -231,30 +240,30 @@ export default {
   border-radius: 10px;
 }
 .add {
-  margin-top: 20px;
   height: 30px;
+  margin-top: 90px;
+}
+.enterNext{
+  margin-top: 10px;
 }
 .back {
-  margin-top: 20px;
-  margin-left: 10px;
   height: 30px;
+  margin-top: 90px;
 }
 .finish {
   display: none;
-  position: fixed;
-  bottom: 21px;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:-26px;
+  position:relative;
+  z-index: 99;
 }
 .addEdit {
   display: none;
-  position: fixed;
   border-radius: 10px;
-  bottom: 20px;
+  margin: 0 auto;
 }
-.nextParas {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+
 .del{
   position: absolute;
   width: 20px;
@@ -283,9 +292,50 @@ export default {
 }
 .storycard {
   width: 200px;
-  float: left;
   border: 1px solid black;
-  margin: 3%;
   border-radius: 10px;
+  margin:10px 0px;
+}
+.nextPara{
+  border: 1px solid black;
+  border-radius: 10px;
+}
+.nextParas{
+  position: relative;
+}
+.swiper-button-prev{
+  left:250px;
+}
+.swiper-button-next{
+  right:250px;
+}
+.currentContainer{
+  display: flex;
+  justify-content:space-around;
+  width:600px;
+  margin:0 auto;
+}
+.editContainer{
+  position: fixed;
+  left: 50%; 
+  top:50%;
+  margin-left: -222px; 
+  margin-top: 50px; 
+  z-index: 99;
+}
+.storyLinebtn{
+  width:85px;
+  left:50%;
+}
+.storyLineContainer{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content:flex-start;
+  height: 580px; 
+  overflow: auto;
+}
+.storyLine{
+  margin-top:10px;
 }
 </style>

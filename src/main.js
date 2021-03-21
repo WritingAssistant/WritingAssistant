@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from "./router/index"
 import axios from 'axios'
+import "bootstrap"
+import "bootstrap/dist/css/bootstrap.css"
 
 Vue.prototype.$axios = axios
 
