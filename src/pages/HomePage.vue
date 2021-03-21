@@ -1,10 +1,12 @@
 <template>
   <div class="homepage">
     <div class="storyLineContainer">
-      <button class="storyLinebtn btn btn-default" @click="storyLineShow()">StoryLine</button>
+      <button class="storyLinebtn btn btn-default" @click="storyLineShow()">
+        StoryLine
+      </button>
       <div class="storyLine" ref="storyLine" v-if="showLine">
-        <div class="storycard" v-for="(story,index) in storyLine" :key="index">
-          {{story}}
+        <div class="storycard" v-for="(story, index) in storyLine" :key="index">
+          {{ story }}
         </div>
       </div>
     </div>
@@ -12,35 +14,54 @@
       <button class="back btn btn-default" @click="back">Go Back</button>
       <div class="cards">
         <div class="shadowContainer">
-          <p class="shadow" v-for="(box, index) in depth" :key="index"><br /></p>
+          <p class="shadow" v-for="(box, index) in depth" :key="index">
+            <br />
+          </p>
         </div>
         <p class="currentPara">{{ currentPara }}</p>
       </div>
       <button class="add btn btn-default" @click="addPara">Follow</button>
     </div>
     <div class="nextParas">
-      <div class="swiper-button-prev"></div>
+      <div v-show="nextParas.length!==0" class="swiper-button-prev"></div>
       <div class="swiper-container">
         <div class="swiper-wrapper">
-         <div
+          <div
             v-for="(para, index) in nextParas"
             :key="index"
             class="swiper-slide"
-        ><div  v-if="!edited"  class="nextPara"   @dblclick="modifyPara(para)" > {{ para }}</div>
-           <textarea v-else v-model="editedpara" @keyup.enter="doneEditing(index)" @blur="doneEditing(index)" cols="25"  rows="10"/>
-           <button class="del" @click="del()" v-if="edited">X</button>
+          >
+            <div v-if="!edited" class="nextPara" @dblclick="modifyPara(para)">
+              {{ para }}
+            </div>
+            <textarea
+              class="modifying"
+              maxlength="480"
+              v-else
+              v-model="editedpara"
+              @keyup.enter="doneEditing(index)"
+              @blur="doneEditing(index)"
+              cols="25"
+              rows="10"
+              autofocus
+            />
+            <button class="del" @click="del()" v-if="edited">X</button>
             <div>
-              <span>{{num}}<img @click="like($event)" class="like"></span>
-              
-              <button class="enterNext" @click="choosePara(index)">See this line</button>
-              <button @click="changeToComments(index)">Comment</button></div>
-           </div>         
+              <span>{{ num }}<img @click="like($event)" class="like" /></span>
+
+              <button class="enterNext" @click="choosePara(index)">
+                See this line
+              </button>
+              <button @click="changeToComments(index)">Comment</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="swiper-button-next"></div>
+      <div v-show="nextParas.length!==0" class="swiper-button-next"></div>
     </div>
     <div class="editContainer">
       <textarea
+        maxlength="480"
         class="addEdit"
         v-model="newPara"
         placeholder="Editing..."
@@ -50,8 +71,6 @@
       ></textarea>
       <button class="finish" @click="submit" ref="finish">Finish</button>
     </div>
-    
-    
   </div>
 </template>
 
@@ -97,13 +116,13 @@ export default {
         }
         return result;
       };
-      this.change = function(newtext,depth,treeIndexes,index){
+      this.change = function (newtext, depth, treeIndexes, index) {
         this.current = this.root;
         for (let i = 0; i < depth; i++) {
           this.current = this.current.next[treeIndexes[i + 1]];
         }
         this.current.next[index].element = newtext;
-      }
+      };
     }
     //初始化树结构
     this.tree = new Tree();
@@ -115,7 +134,7 @@ export default {
         new Swiper(".swiper-container", {
           loop: false,
           pagination: {
-            el: '.swiper-pagination',
+            el: ".swiper-pagination",
           },
           navigation: {
             nextEl: ".swiper-button-next",
@@ -134,11 +153,13 @@ export default {
       currentPara:
         "The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!",
       nextParas: [],
-      edited:false,
-      num:0,
-      storyLine:["The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!"],
-      showLine:false,
-      editedpara:""
+      edited: false,
+      num: 0,
+      storyLine: [
+        "The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!",
+      ],
+      showLine: false,
+      editedpara: "",
     };
   },
 
@@ -148,6 +169,10 @@ export default {
       this.$refs.finish.style.display = "block";
     },
     submit() {
+      if (this.newPara.length<10) {
+        alert("It's too short(10 letters at least)!")
+        return
+      }
       this.tree.append(this.newPara, this.depth, this.treeIndexes);
       this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes);
       this.$refs.editingArea.style.display = "none";
@@ -191,32 +216,34 @@ export default {
     },
     modifyPara(para) {
       this.editedpara = para;
-      this.edited=!this.edited
-     
+      this.edited = !this.edited;
     },
     doneEditing(index) {
-              this.tree.change(this.editedpara,this.depth,this.treeIndexes,index);
-              this.nextParas[index] = this.editedpara;
-              this.edited=!this.edited;
-              console.log(this.nextParas);
-              },
-    del(){
+      if (this.editedpara.length<10) {
+        alert("It's too short(10 letters at least)!")
+        return
+      }
+      this.tree.change(this.editedpara, this.depth, this.treeIndexes, index);
+      this.nextParas[index] = this.editedpara;
+      this.edited = !this.edited;
+      console.log(this.nextParas);
+    },
+    del() {
       this.editedpara = "";
     },
-    like(e){
-       if (e.target.className.indexOf("like-selected") == -1) {
-                            e.target.className = "like-selected"; //切换按钮样式
-                            this.num++;
-                        } else {
-                            e.target.className = "like";//切换按钮样式
-                            this.num--;
-                        }
-                 },
-    storyLineShow(){
+    like(e) {
+      if (e.target.className.indexOf("like-selected") == -1) {
+        e.target.className = "like-selected"; //切换按钮样式
+        this.num++;
+      } else {
+        e.target.className = "like"; //切换按钮样式
+        this.num--;
+      }
+    },
+    storyLineShow() {
       this.showLine = !this.showLine;
-    }
-    
-  }
+    },
+  },
 };
 </script>
 
@@ -243,7 +270,7 @@ export default {
   height: 30px;
   margin-top: 90px;
 }
-.enterNext{
+.enterNext {
   margin-top: 10px;
 }
 .back {
@@ -252,10 +279,10 @@ export default {
 }
 .finish {
   display: none;
-  margin-left:auto;
-  margin-right:auto;
-  margin-top:-26px;
-  position:relative;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -26px;
+  position: relative;
   z-index: 99;
 }
 .addEdit {
@@ -264,7 +291,7 @@ export default {
   margin: 0 auto;
 }
 
-.del{
+.del {
   position: absolute;
   width: 20px;
   height: 20px;
@@ -294,48 +321,51 @@ export default {
   width: 200px;
   border: 1px solid black;
   border-radius: 10px;
-  margin:10px 0px;
+  margin: 10px 0px;
 }
-.nextPara{
+.nextPara {
   border: 1px solid black;
   border-radius: 10px;
 }
-.nextParas{
+.nextParas {
   position: relative;
 }
-.swiper-button-prev{
-  left:250px;
+.swiper-button-prev {
+  left: 350px;
 }
-.swiper-button-next{
-  right:250px;
+.swiper-button-next {
+  right: 350px;
 }
-.currentContainer{
+.currentContainer {
   display: flex;
-  justify-content:space-around;
-  width:600px;
-  margin:0 auto;
+  justify-content: space-around;
+  width: 600px;
+  margin: 0 auto;
 }
-.editContainer{
+.editContainer {
   position: fixed;
-  left: 50%; 
-  top:50%;
-  margin-left: -222px; 
-  margin-top: 50px; 
+  left: 50%;
+  top: 50%;
+  margin-left: -222px;
+  margin-top: 50px;
   z-index: 99;
 }
-.storyLinebtn{
-  width:85px;
-  left:50%;
+.storyLinebtn {
+  width: 85px;
+  left: 50%;
 }
-.storyLineContainer{
+.storyLineContainer {
   position: absolute;
   display: flex;
   flex-direction: column;
-  justify-content:flex-start;
-  height: 580px; 
+  justify-content: flex-start;
+  height: 580px;
   overflow: auto;
 }
-.storyLine{
-  margin-top:10px;
+.storyLine {
+  margin-top: 10px;
+}
+.modifying{
+  border-radius: 10px;
 }
 </style>
