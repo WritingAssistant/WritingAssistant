@@ -23,16 +23,18 @@
           <button class="bbutton" @click="register">注册</button>
         </div>
       </div>
-      <div class="small-box" :class="{ active: isLogin }">
-        <div class="small-contain" v-if="isLogin">
-          <div class="stitle">Dear English learner:</div>
-          <p class="scontent">拥有属于自己的账号，和我们一起进步吧！</p>
-          <button class="sbutton" @click="changeType">注册</button>
-        </div>
-        <div class="small-contain" v-else>
-          <div class="stitle">Dear English learner:</div>
-          <p class="scontent">保持一颗向上的心，我们都会有更多的收获！</p>
-          <button class="sbutton" @click="changeType">登录</button>
+      <div class="overlay">
+        <div class="small-box" :class="{ active: isLogin }">
+          <div class="small-contain left" v-if="isLogin">
+            <div class="stitle">Dear English learner:</div>
+            <p class="scontent">拥有属于自己的账号，和我们一起进步吧！</p>
+            <button class="sbutton" @click="changeType">注册</button>
+          </div>
+          <div class="small-contain right" v-else>
+            <div class="stitle">Dear English learner:</div>
+            <p class="scontent">保持一颗向上的心，我们都会有更多的收获！</p>
+            <button class="sbutton" @click="changeType">登录</button>
+          </div>
         </div>
       </div>
     </div>
@@ -40,6 +42,7 @@
 </template>
 
 <script>
+
 export default {
   name: "login-register",
   data() {
@@ -138,7 +141,22 @@ export default {
 };
 </script>
 
-<style scoped="scoped">
+<style>
+ body{
+  background: url(../../assets/login.jpg) no-repeat;
+  align-items: center;
+  background-color: var(--white);
+  background-attachment: fixed;
+  background-size: cover;
+  display: grid;
+}
+:root {
+  --white: #e9e9e9;
+  --gray: #333;
+  --blue: #0367a6;
+  --lightblue: #008997;
+}
+
 .login-register {
   width: 100vw;
   height: 100vh;
@@ -151,9 +169,10 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #fff;
+  background-color: radial-gradient(dimgrey 20%, transparent 16%),
+    radial-gradient(dimgrey 15%, transparent 16%);
   border-radius: 20px;
-  box-shadow: 0 0 3px #f0f0f0, 0 0 6px #f0f0f0;
+  box-shadow: 0 0 3px #008997, 0 0 6px #f0f0f0;
 }
 .big-box {
   width: 70%;
@@ -168,19 +187,22 @@ export default {
   width: 100%;
   height: 100%;
   display: flex;
+
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 .btitle {
-  font-size: 1.5em;
+  font-size: 1.8em;
+  padding-bottom:1em;
   font-weight: bold;
-  color: rgb(57, 167, 176);
+  color: whitesmoke
 }
 .bform {
   width: 100%;
   height: 40%;
-  padding: 2em 0;
+  
+
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -200,6 +222,7 @@ export default {
   border: none;
   outline: none;
   border-radius: 10px;
+  padding-top:5px;
   padding-left: 2em;
   background-color: #f0f0f0;
 }
@@ -209,22 +232,28 @@ export default {
   border-radius: 24px;
   border: none;
   outline: none;
-  background-color: rgb(57, 167, 176);
-  color: #fff;
+  background-color: var(--white);
+ 
+  border: 1px solid var(--blue);
+  color:var(--blue);
   font-size: 0.9em;
   cursor: pointer;
 }
 .small-box {
   width: 30%;
   height: 100%;
-  background: linear-gradient(135deg, rgb(57, 167, 176), rgb(56, 183, 145));
-  position: absolute;
+
+  position: relative;
   top: 0;
   left: 0;
   transform: translateX(0%);
-  transition: all 1s;
-  border-top-left-radius: inherit;
-  border-bottom-left-radius: inherit;
+  transition: all 0.6s;
+  background: linear-gradient(80deg, rgb(57, 167, 176), rgb(56, 96, 183));
+  position: absolute;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
 .small-contain {
   width: 100%;
@@ -234,8 +263,9 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .stitle {
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-weight: bold;
   color: #fff;
 }
@@ -266,9 +296,9 @@ export default {
   left: 100%;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  border-top-right-radius: inherit;
-  border-bottom-right-radius: inherit;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
   transform: translateX(-100%);
-  transition: all 1s;
+  transition: all 0.6s;
 }
 </style>
