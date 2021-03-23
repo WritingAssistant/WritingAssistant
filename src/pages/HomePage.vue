@@ -1,9 +1,7 @@
 <template>
   <div class="homepage">
     <div class="storyLineContainer">
-      <button class="storyLinebtn btn btn-default" @click="storyLineShow()">
-        StoryLine
-      </button>
+        <i @click="storyLineShow()" class="iconfont icon-storybook"></i>
       <div class="storyLine" ref="storyLine" v-if="showLine">
         <div class="storycard" v-for="(story, index) in storyLine" :key="index">
           {{ story }}
@@ -11,7 +9,7 @@
       </div>
     </div>
     <div class="currentContainer">
-      <button class="back btn btn-default" @click="back">Go Back</button>
+      <i @click="back()" class="iconfont icon-back back"></i>
       <div class="cards">
         <div class="shadowContainer">
           <p class="shadow" v-for="(box, index) in depth" :key="index">
@@ -20,7 +18,7 @@
         </div>
         <p class="currentPara">{{ currentPara }}</p>
       </div>
-      <button class="add btn btn-default" @click="addPara">Follow</button>
+      <i @click="addPara()" class="iconfont icon-following add"></i>
     </div>
     <div class="nextParas">
       <div v-show="nextParas.length!==0" class="swiper-button-prev"></div>
@@ -69,7 +67,7 @@
         rows="10"
         ref="editingArea"
       ></textarea>
-      <button class="finish" @click="submit" ref="finish">Finish</button>
+      <i @click="submit()" ref="finish" class="iconfont icon-Cartoon-Finish finish"></i>
     </div>
   </div>
 </template>
@@ -261,29 +259,38 @@ export default {
   top: 30px;
 }
 .shadow {
-  border-top: 1px black solid;
+  border-top: 1px white solid;
   width: 300px;
   margin: -17px auto;
   border-radius: 10px;
 }
 .add {
-  height: 30px;
+  font-size: 30px;
   margin-top: 90px;
+}
+.add:hover{
+  cursor:pointer;
 }
 .enterNext {
   margin-top: 10px;
 }
 .back {
-  height: 30px;
+  font-size: 30px;
   margin-top: 90px;
 }
+.back:hover{
+  cursor:pointer;
+}
 .finish {
+  font-size: 30px;
   display: none;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: -26px;
+  margin-left: 200px;
+  margin-top: -33px;
   position: relative;
   z-index: 99;
+}
+.finish:hover{
+  cursor: pointer;
 }
 .addEdit {
   display: none;
@@ -298,11 +305,12 @@ export default {
   margin-left: -20px;
 }
 .currentPara {
-  border: 1px black solid;
+  border: 1px white solid;
   width: 300px;
   margin: 30px auto;
   word-break: normal;
   border-radius: 10px;
+  background:white;
 }
 
 .like {
@@ -324,8 +332,9 @@ export default {
   margin: 10px 0px;
 }
 .nextPara {
-  border: 1px solid black;
+  border: 1px solid white;
   border-radius: 10px;
+  background: aliceblue;
 }
 .nextParas {
   position: relative;
@@ -351,7 +360,7 @@ export default {
   z-index: 99;
 }
 .storyLinebtn {
-  width: 85px;
+  
   left: 50%;
 }
 .storyLineContainer {
@@ -367,5 +376,11 @@ export default {
 }
 .modifying{
   border-radius: 10px;
+}
+.icon-storybook{
+  font-size:50px;
+}
+.icon-storybook:hover{
+  cursor: pointer;
 }
 </style>
