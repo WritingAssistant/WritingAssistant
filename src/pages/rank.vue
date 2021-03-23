@@ -2,22 +2,53 @@
   <div>
     <main>
       <div class="glass">
-        <div class="dashboard"></div>
-        <div class="info"></div>
-        <div class="status">
-          <h1>{{ ranktitle }}</h1>
-          <input type="text" />
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+        <div class="dashboard">
+          <div class="user">
+            <img src="{{}}" alt="">
+          </div>
+          <h4>个人记录：</h4>
+          <div class="selfranks">
+            <div class="rank">
+              <img src="" alt="">
+                <h5>我续写过的话题数量：</h5>
+            </div>
+            <div class="rank">
+              <img src="" alt="">
+                <h5>点赞数：</h5>
+            </div>
+            <div class="rank">
+              <img src="" alt="">
+                <h5>被点赞数：</h5>
+            </div>
+            <div class="rank">
+              <img src="" alt="">
+                <h5>最早发布的时间：</h5>
+            </div>
+            <div class="more">
+            <a href="/me"> <h4>查看详情：</h4></a>
+            <img src="" alt="">
+            </div>
+          </div>
         </div>
-        <div class="cards">
-          <img src="" alt="" />
-          <div class="classinfo"></div>
+        <div class="info">
+          <div class="status">
+            <h1>{{ ranktitle }}</h1>
+            <input type="text" />
+          </div>
+          <div class="cards">
+            <img src="" alt="配图" />
+            <div class="classinfo">
+              <h3>{{rank}}</h3>
+              <h2 class="ranknum">{{ranknum}}</h2>
+            </div>
+          </div>
         </div>
       </div>
     </main>
     <div class="circle-1"></div>
     <div class="circle-2"></div>
-    <div class="swiper-button-prev"></div>
-    <div class="swiper-button-next"></div>
   </div>
 </template>
 
@@ -92,5 +123,32 @@ main {
 .circle-2 {
   left: 10%;
   bottom: 5%;
+}
+.dashboard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  text-align: center;
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.6),
+    rgba(255, 255, 255, 0.3)
+  );
+  border-radius: 20px;
+}
+.info {
+  flex: 2;
+}
+.swiper-button-prev {
+  left: -5%;
+}
+.swiper-button-next {
+  right: -5%;
+}
+.rank{
+  display: flex;
+  margin: 20px 0;
 }
 </style>
