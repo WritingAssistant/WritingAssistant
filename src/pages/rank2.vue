@@ -35,7 +35,7 @@
         </div>
               <div class="info">
           <div class="status">
-            <h3>续写最长的话题类型:</h3>
+            <h3>最新发布的续写：</h3>
             <input type="text" />
           </div>
           <div class="cards">
@@ -79,20 +79,11 @@ export default {
       pic: "",
     };
   },
-  mounted() {
-   this.$axios({
-       method: "post",
-            url: "http://127.0.0.1:3000/api/user/rank",
-            data: {
-          
-            },
-          })
-          .then((res) => {
-            console.log(res.data)
-   })
+  created() {
+    this.fetchData();
   },
   watch: {
-  
+    $route: "fetchData",
     nextParas() {
       this.$nextTick(() => {
         new Swiper(".swiper-container", {
@@ -105,7 +96,6 @@ export default {
       });
     },
     methods: {
-
     }
   },
 };

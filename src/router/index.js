@@ -4,7 +4,11 @@ import HomePage from "../pages/HomePage"
 // import Me from "../pages/Me"
 import login from "../pages/login"
 import comments from "../pages/comments"
+
 import rank from "../pages/rank"
+import rank1 from "../pages/rank1"
+import rank2 from "../pages/rank2"
+
 
 import App from '../pages/views/App.vue'
 import Themes from '../pages/views/Themes.vue'
@@ -68,8 +72,24 @@ Vue.use(VueRouter)
         meta: {
             showNavigation: true
         }
+    },
+        
+    {path:"/rank1",
+        component:rank1,
+        meta: {
+            showNavigation: true
+        }
+    },
+       { 
+           path:"/rank2",
+        component:rank2,
+        meta: {
+            showNavigation: true
+        },
     }
-    ]
+    
+]
+
 const router = new VueRouter({
    mode: 'history',
     base: process.env.BASE_URL,

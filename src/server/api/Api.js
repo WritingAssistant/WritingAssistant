@@ -56,4 +56,17 @@ router.post('/add', (req, res) => {
 	});
 });
 
+router.post('/rank', (req, res) => {
+	var params = req.body
+	console.log(params)
+	conn.query('select * from rank', [params.rankname, params.ranktitle, params.ranknum], function (err, result) {
+	  if (err) {
+		console.log(err)
+	  }
+	  if (result) {
+		jsonWrite(res, result)
+	  }
+	})
+  })
+
 module.exports = router;
