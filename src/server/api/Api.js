@@ -56,4 +56,19 @@ router.post('/add', (req, res) => {
 	});
 });
 
+//段落导入接口
+router.post('/getParas',(req,res) => {
+	const topic = req.body;
+	const sel_para = $sql.paras.select + " where topic_id = '" + topic.id + "'";
+	// console.log(sel_para);
+
+	conn.query(sel_para, topic.id,(error,results) => {
+		if(error){
+			console.log(error);
+		}
+		var a = JSON.stringify(results);
+		res.send(a);
+	})
+});
+
 module.exports = router;
