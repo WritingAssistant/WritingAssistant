@@ -343,10 +343,12 @@ export default {
   position: relative;
 }
 .swiper-button-prev {
-  left: 350px;
+  color: white;
+  left: 350px !important;
 }
 .swiper-button-next {
-  right: 350px;
+  color: white;
+  right: 350px !important;
 }
 .currentContainer {
   display: flex;
@@ -371,7 +373,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  height: 580px;
+  height: 545px;
   overflow: auto;
   margin-left: 20px;
 }

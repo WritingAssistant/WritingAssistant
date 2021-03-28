@@ -143,6 +143,7 @@ export default {
 
 <style>
 
+
 :root {
   --white: #e9e9e9;
   --gray: #333;

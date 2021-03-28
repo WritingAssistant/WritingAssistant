@@ -48,7 +48,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
     *{
         padding: 0;
         margin:0;
@@ -64,8 +64,9 @@ export default {
     .navbar{
         position:relative;
         padding:20px;
-        border-radius: 50px;
+        border-radius: 50px !important;
         background-color: #fff;
+        height:60px;
     }
     .navbar input{
         opacity: 0;
