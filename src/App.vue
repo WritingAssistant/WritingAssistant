@@ -18,11 +18,20 @@ export default {
 </script>
 
 <style>
+ body{
+  background: url(../assets/login.jpg) no-repeat;
+  align-items: center;
+  background-color: var(--white);
+  background-attachment: fixed;
+  background-size: cover;
+}
   #app{
     position:relative;
+
     padding:25px;
     width: 100%;
     height: 100%;
-    text-align: center;
+
+
   }
 </style>

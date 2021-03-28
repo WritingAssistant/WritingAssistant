@@ -142,14 +142,8 @@ export default {
 </script>
 
 <style>
- body{
-  background: url(../../assets/login.jpg) no-repeat;
-  align-items: center;
-  background-color: var(--white);
-  background-attachment: fixed;
-  background-size: cover;
-  display: grid;
-}
+
+
 :root {
   --white: #e9e9e9;
   --gray: #333;

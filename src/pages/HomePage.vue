@@ -1,9 +1,7 @@
 <template>
   <div class="homepage">
     <div class="storyLineContainer">
-      <button class="storyLinebtn btn btn-default" @click="storyLineShow()">
-        StoryLine
-      </button>
+        <i @click="storyLineShow()" class="iconfont icon-wulianwang-"></i>
       <div class="storyLine" ref="storyLine" v-if="showLine">
         <div class="storycard" v-for="(story, index) in storyLine" :key="index">
           {{ story }}
@@ -11,7 +9,7 @@
       </div>
     </div>
     <div class="currentContainer">
-      <button class="back btn btn-default" @click="back">Go Back</button>
+      <i @click="back()" class="iconfont icon-backup back"></i>
       <div class="cards">
         <div class="shadowContainer">
           <p class="shadow" v-for="(box, index) in depth" :key="index">
@@ -20,7 +18,7 @@
         </div>
         <p class="currentPara">{{ currentPara }}</p>
       </div>
-      <button class="add btn btn-default" @click="addPara">Follow</button>
+      <i @click="addPara()" class="iconfont icon-down add"></i>
     </div>
     <div class="nextParas">
       <div v-show="nextParas.length!==0" class="swiper-button-prev"></div>
@@ -69,7 +67,7 @@
         rows="10"
         ref="editingArea"
       ></textarea>
-      <button class="finish" @click="submit" ref="finish">Finish</button>
+      <i @click="submit()" ref="finish" class="iconfont icon-Cartoon-Finish finish"></i>
     </div>
   </div>
 </template>
@@ -170,7 +168,7 @@ export default {
     },
     submit() {
       if (this.newPara.length<10) {
-        alert("It's too short(10 letters at least)!")
+        alert("It's too short! (10 letters at least)")
         return
       }
       this.tree.append(this.newPara, this.depth, this.treeIndexes);
@@ -220,7 +218,7 @@ export default {
     },
     doneEditing(index) {
       if (this.editedpara.length<10) {
-        alert("It's too short(10 letters at least)!")
+        alert("It's too short! (10 letters at least)")
         return
       }
       this.tree.change(this.editedpara, this.depth, this.treeIndexes, index);
@@ -248,9 +246,10 @@ export default {
 </script>
 
 <style>
+
 .swiper-container {
   width: 200px;
-  top: 20px;
+  top: 15px;
 }
 
 .swiper-slide {
@@ -258,32 +257,51 @@ export default {
 }
 .shadowContainer {
   position: relative;
-  top: 30px;
+  top: 40px;
 }
-.shadow {
-  border-top: 1px black solid;
+.shadowContainer p:not(:last-child) {
+  border-top: 1px white solid;
   width: 300px;
-  margin: -17px auto;
+  margin-bottom:-15px;
   border-radius: 10px;
+  background: rgb(37, 37, 245);
+  opacity: 0.2;
+}
+.shadowContainer p:last-child {
+  border-top: 1px white solid;
+  width: 300px;
+  border-radius: 10px;
+  margin-bottom: 2px;
+  background: rgb(37, 37, 245);
+  opacity: 0.2;
 }
 .add {
-  height: 30px;
+  font-size: 35px;
   margin-top: 90px;
+}
+.add:hover{
+  cursor:pointer;
 }
 .enterNext {
   margin-top: 10px;
 }
 .back {
-  height: 30px;
+  font-size: 30px;
   margin-top: 90px;
 }
+.back:hover{
+  cursor:pointer;
+}
 .finish {
+  font-size: 30px;
   display: none;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: -26px;
+  margin-left: 200px;
+  margin-top: -33px;
   position: relative;
   z-index: 99;
+}
+.finish:hover{
+  cursor: pointer;
 }
 .addEdit {
   display: none;
@@ -298,11 +316,14 @@ export default {
   margin-left: -20px;
 }
 .currentPara {
-  border: 1px black solid;
+  z-index: 999;
+  border: 1px white solid;
   width: 300px;
-  margin: 30px auto;
+  margin: 25px auto;
   word-break: normal;
   border-radius: 10px;
+  background:white;
+  box-shadow: 5px 5px 7px rgba(33,33,33,.7);
 }
 
 .like {
@@ -318,23 +339,28 @@ export default {
   background-size: 100%;
 }
 .storycard {
+  background:white;
   width: 200px;
   border: 1px solid black;
   border-radius: 10px;
   margin: 10px 0px;
 }
 .nextPara {
-  border: 1px solid black;
+  border: 1px solid white;
   border-radius: 10px;
+  background:white;
 }
 .nextParas {
+  
   position: relative;
 }
 .swiper-button-prev {
-  left: 350px;
+  color: white;
+  left: 350px !important;
 }
 .swiper-button-next {
-  right: 350px;
+  color: white;
+  right: 350px !important;
 }
 .currentContainer {
   display: flex;
@@ -351,7 +377,7 @@ export default {
   z-index: 99;
 }
 .storyLinebtn {
-  width: 85px;
+  
   left: 50%;
 }
 .storyLineContainer {
@@ -359,13 +385,20 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  height: 580px;
+  height: 545px;
   overflow: auto;
+  margin-left: 20px;
 }
 .storyLine {
   margin-top: 10px;
 }
 .modifying{
   border-radius: 10px;
+}
+.icon-wulianwang-{
+  font-size:50px;
+}
+.icon-wulianwang-:hover{
+  cursor: pointer;
 }
 </style>
