@@ -1,0 +1,23 @@
+body,html,#root{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+.main .right .content{
+    flex: 1;
+    overflow-y: auto;
+}
+
+.main .right .content::-webkit-scrollbar{
+    display: none;
+}
+
+.main .right .content .item{
+    background-color: #E6F9F9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    height: 120px;
+}

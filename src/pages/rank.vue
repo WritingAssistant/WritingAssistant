@@ -39,9 +39,10 @@
             <input type="text" />
           </div>
           <div class="cards">
-            <img src="" alt="配图" />
-            <div class="classinfo">
-              <h3>{{rank}}</h3>
+            
+            <div class="cardinfo">
+              <img src="" alt="配图" />
+              <h3 class="cinfo">{{rank}}</h3>
               <h2 class="ranknum">{{ranknum}}</h2>
             </div>
           </div>
@@ -204,7 +205,21 @@ main {
   margin:40px;
   justify-content: space-evenly;
 }
-.classinfo{
+.cardinfo{
   display: flex;
+  background:linear-gradient(to left top,rgba(255,255,255,0.2),rgba(255,255,255,0.9));
+  margin:20px 0px;
+  border-radius: 10px;
+  padding:20px;
+  box-shadow: 10px 10px 20px rgba(122,122,122,0.2);
+  justify-content: space-between;
+
+}
+
+.ranknum{
+ font-weight: 300;
+   background: linear-gradient(to right top, #5669da, #6cdb);
+   -webkit-background-clip:text;
+   -webkit-text-fill-color: transparent;
 }
 </style>

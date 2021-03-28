@@ -1,11 +1,16 @@
 import Vue from "vue"
 import VueRouter from "vue-router"
 import HomePage from "../pages/HomePage"
-import Me from "../pages/Me"
+// import Me from "../pages/Me"
 import login from "../pages/login"
 import comments from "../pages/comments"
 import rank from "../pages/rank"
 
+import App from '../pages/views/App.vue'
+import Themes from '../pages/views/Themes.vue'
+import Reply from '../pages/views/Reply.vue'
+import Comments from '../pages/views/Comments.vue'
+import Collection from '../pages/views/Collection.vue'
 
 Vue.use(VueRouter)
 
@@ -19,10 +24,32 @@ Vue.use(VueRouter)
     },
     {
         path: "/me",
-        component: Me,
+        component: App,
         meta: {
             showNavigation: true
-        }
+        },
+        children:[
+            {
+                path: '/me',
+                component: Themes,
+            },
+            {
+                path: '/me/Themes',
+                component: Themes,
+            },
+            {
+                path: '/me/Reply',
+                component: Reply,
+            },
+            {
+                path: '/me/Comments',
+                component: Comments,
+            },
+            {
+                path: '/me/Collection',
+                component: Collection,
+            },
+        ]
     },
     {
         path:"/",
