@@ -1,7 +1,7 @@
 <template>
   <div class="homepage">
     <div class="storyLineContainer">
-        <i @click="storyLineShow()" class="iconfont icon-storybook"></i>
+        <i @click="storyLineShow()" class="iconfont icon-wulianwang-"></i>
       <div class="storyLine" ref="storyLine" v-if="showLine">
         <div class="storycard" v-for="(story, index) in storyLine" :key="index">
           {{ story }}
@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="currentContainer">
-      <i @click="back()" class="iconfont icon-back back"></i>
+      <i @click="back()" class="iconfont icon-backup back"></i>
       <div class="cards">
         <div class="shadowContainer">
           <p class="shadow" v-for="(box, index) in depth" :key="index">
@@ -18,7 +18,7 @@
         </div>
         <p class="currentPara">{{ currentPara }}</p>
       </div>
-      <i @click="addPara()" class="iconfont icon-following add"></i>
+      <i @click="addPara()" class="iconfont icon-down add"></i>
     </div>
     <div class="nextParas">
       <div v-show="nextParas.length!==0" class="swiper-button-prev"></div>
@@ -265,7 +265,7 @@ export default {
   border-radius: 10px;
 }
 .add {
-  font-size: 30px;
+  font-size: 35px;
   margin-top: 90px;
 }
 .add:hover{
@@ -311,6 +311,7 @@ export default {
   word-break: normal;
   border-radius: 10px;
   background:white;
+  box-shadow: 5px 5px 7px rgba(33,33,33,.7);
 }
 
 .like {
@@ -326,6 +327,7 @@ export default {
   background-size: 100%;
 }
 .storycard {
+  background:white;
   width: 200px;
   border: 1px solid black;
   border-radius: 10px;
@@ -334,9 +336,10 @@ export default {
 .nextPara {
   border: 1px solid white;
   border-radius: 10px;
-  background: aliceblue;
+  background:white;
 }
 .nextParas {
+  
   position: relative;
 }
 .swiper-button-prev {
@@ -370,6 +373,7 @@ export default {
   justify-content: flex-start;
   height: 580px;
   overflow: auto;
+  margin-left: 20px;
 }
 .storyLine {
   margin-top: 10px;
@@ -377,10 +381,10 @@ export default {
 .modifying{
   border-radius: 10px;
 }
-.icon-storybook{
+.icon-wulianwang-{
   font-size:50px;
 }
-.icon-storybook:hover{
+.icon-wulianwang-:hover{
   cursor: pointer;
 }
 </style>

@@ -18,8 +18,14 @@ export default {
 </script>
 
 <style>
+ body{
+  background: url(../assets/login.jpg) no-repeat;
+  align-items: center;
+  background-color: var(--white);
+  background-attachment: fixed;
+  background-size: cover;
+}
   #app{
     position:relative;
-    padding:25px;
   }
 </style>
