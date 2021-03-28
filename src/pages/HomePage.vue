@@ -168,7 +168,7 @@ export default {
     },
     submit() {
       if (this.newPara.length<10) {
-        alert("It's too short(10 letters at least)!")
+        alert("It's too short! (10 letters at least)")
         return
       }
       this.tree.append(this.newPara, this.depth, this.treeIndexes);
@@ -218,7 +218,7 @@ export default {
     },
     doneEditing(index) {
       if (this.editedpara.length<10) {
-        alert("It's too short(10 letters at least)!")
+        alert("It's too short! (10 letters at least)")
         return
       }
       this.tree.change(this.editedpara, this.depth, this.treeIndexes, index);
@@ -246,9 +246,10 @@ export default {
 </script>
 
 <style>
+
 .swiper-container {
   width: 200px;
-  top: 20px;
+  top: 15px;
 }
 
 .swiper-slide {
@@ -256,13 +257,23 @@ export default {
 }
 .shadowContainer {
   position: relative;
-  top: 30px;
+  top: 40px;
 }
-.shadow {
+.shadowContainer p:not(:last-child) {
   border-top: 1px white solid;
   width: 300px;
-  margin: -17px auto;
+  margin-bottom:-15px;
   border-radius: 10px;
+  background: rgb(37, 37, 245);
+  opacity: 0.2;
+}
+.shadowContainer p:last-child {
+  border-top: 1px white solid;
+  width: 300px;
+  border-radius: 10px;
+  margin-bottom: 2px;
+  background: rgb(37, 37, 245);
+  opacity: 0.2;
 }
 .add {
   font-size: 35px;
@@ -305,9 +316,10 @@ export default {
   margin-left: -20px;
 }
 .currentPara {
+  z-index: 999;
   border: 1px white solid;
   width: 300px;
-  margin: 30px auto;
+  margin: 25px auto;
   word-break: normal;
   border-radius: 10px;
   background:white;
