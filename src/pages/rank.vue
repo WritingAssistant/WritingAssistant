@@ -8,8 +8,9 @@
           <div class="user">
             <img src="{{}}" alt="">
           </div>
-          <h4>个人记录：</h4>
+          
           <div class="selfranks">
+            <h4>个人记录：</h4>
             <div class="rank">
               <img src="" alt="">
                 <h5>我续写过的话题数量：</h5>
@@ -27,8 +28,8 @@
                 <h5>最早发布的时间：</h5>
             </div>
             <div class="more">
-            <a href="/me"> <h4>查看详情：</h4></a>
-            <img src="" alt="">
+            <h4>查看详情：</h4>
+           <a href="/me">  <img src="../../assets/rankpic1.png" alt=""></a>
             </div>
           </div>
         </div>
@@ -138,8 +139,36 @@ main {
   );
   border-radius: 20px;
 }
+.rank{
+  display: flex;
+  margin:20px 0;
+  padding:10px 50px;
+  align-items: center;
+
+}
+.selfrank h4{
+  color: rgb(68, 83, 219);
+  font-weight: 600;
+  
+}
+.rank h5{
+  padding:0 20px;
+    color: rgb(68, 83, 219);
+  font-weight: 600;
+  font-size: 12px;
+}
+.more{
+  background:linear-gradient(to right top, #5669da, #6cdb);
+  border-radius: 20px;
+  padding: 10px;
+  color:whitesmoke;
+  display: flex;
+  margin: 10px;
+  font-family: fantasy;
+}
 .info {
   flex: 2;
+
 }
 .swiper-button-prev {
   left: -5%;
@@ -147,8 +176,35 @@ main {
 .swiper-button-next {
   right: -5%;
 }
-.rank{
+.more img{
+  width:100px;
+  height: 100px;
+ position: absolute;
+ top:78%;
+ left:20%
+
+}
+.status{
+  margin-bottom: 20px;
+}
+.status input{
+   background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.6),
+    rgba(255, 255, 255, 0.3)
+  );
+  border:none;
+  padding:6px;
+  width:60%;
+  border-radius: 20px;
+}
+.cards{
   display: flex;
-  margin: 20px 0;
+  flex-direction: column;
+  margin:40px;
+  justify-content: space-evenly;
+}
+.classinfo{
+  display: flex;
 }
 </style>
