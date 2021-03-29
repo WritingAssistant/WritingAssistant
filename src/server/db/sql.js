@@ -4,7 +4,7 @@ var Mysql = {
         select: 'select * from login'
     },
     paras:{
-        add:'insert into paras (topic_id, depth, parent, content, author, time)',
+        add:'insert into paras (topic_id, selectIndexes, content, author, time) values (?,?,?,?,?)' ,
         select:'select * from paras'
     }
 }

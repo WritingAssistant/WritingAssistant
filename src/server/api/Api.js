@@ -71,4 +71,18 @@ router.post('/getParas',(req,res) => {
 	})
 });
 
+//段落添加接口
+router.post('/addPara',(req,res)=>{
+	const para = req.body;
+	const add_para = $sql.paras.add;
+	conn.query(add_para,[para.topic_id, para.selectIndexes, para.content, para.author, para.time],(err,rst) => {
+		if(err){
+			console.log(err);
+		}else{
+			console.log(rst);
+
+		}
+	})
+})
+
 module.exports = router;
