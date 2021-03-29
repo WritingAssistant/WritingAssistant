@@ -35,8 +35,7 @@
         </div>
               <div class="info">
           <div class="status">
-            <h3>续写最长的话题类型:</h3>
-            <input type="text" />
+            <h3>最受欢迎的话题类型：</h3>
           </div>
           <div class="cards">
             <div class="cardinfo">
@@ -69,7 +68,6 @@ import "swiper/swiper-bundle.min.css";
 export default {
   data() {
     return {
-     
       likesgot: "",
       topicnum: "3",
       likes: "",
@@ -77,17 +75,25 @@ export default {
       pic: "",
       rank1:"",
      rank2:"",
-      rank3:""
+      rank3:"",
     };
   },
   mounted() {
     var rank1=rank1
+    var rank2=rank2
+    var rank3=rank3
+    var rank=rank
    this.$axios({
       method:"post",
       url:"http://127.0.0.1:3000/api/user/longdepth",
+     data:{
+        rank:this.topicname
+      }
     }).then((res)=>{
        console.log(res.data);
-        this.rank1=res.data
+        this.rank1=res.data[0].topicname
+         this.rank2=res.data[1].topicname
+          this.rank3=res.data[2].topicname
     })
   },
    

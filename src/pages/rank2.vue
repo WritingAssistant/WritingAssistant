@@ -35,23 +35,23 @@
         </div>
               <div class="info">
           <div class="status">
-            <h3>最新发布的续写：</h3>
-            <input type="text" />
+            <h3>最新作品集：</h3>
+            
           </div>
           <div class="cards">
             <div class="cardinfo">
-              <img src="" alt="配图" />
-              <h3 class="cinfo">{{ rank1 }}</h3>
+              <img src="../../assets/gold.png" alt="配图" />
+              <h3 class="cinfo">{{rank1}}</h3>
               <h2 class="ranknum">1</h2>
             </div>
             <div class="cardinfo">
-              <img src="" alt="配图" />
-              <h3 class="cinfo">{{ rank2 }}</h3>
+              <img src="../../assets/sliver.png" alt="配图" />
+              <h3 class="cinfo">{{rank2}}</h3>
               <h2 class="ranknum">2</h2>
             </div>
             <div class="cardinfo">
-              <img src="" alt="配图" />
-              <h3 class="cinfo">{{ rank3 }}</h3>
+              <img src="../../assets/bronze.png" alt="配图" />
+              <h3 class="cinfo">{{rank3}}</h3>
               <h2 class="ranknum">3</h2>
             </div>
           </div>
@@ -69,18 +69,33 @@ import "swiper/swiper-bundle.min.css";
 export default {
   data() {
     return {
-      rank1: "",
-      ranktitle: "",
-      ranknum: "",
       likesgot: "",
       topicnum: "3",
       likes: "",
       formertime: "",
       pic: "",
+      rank1:"",
+     rank2:"",
+      rank3:"",
     };
   },
-  created() {
-    this.fetchData();
+ mounted() {
+    var rank1=rank1
+    var rank2=rank2
+    var rank3=rank3
+    var rank=rank
+   this.$axios({
+      method:"post",
+      url:"http://127.0.0.1:3000/api/user/newestwriting",
+     data:{
+        rank:this.content
+      }
+    }).then((res)=>{
+       console.log(res.data);
+        this.rank1=res.data[0].content
+         this.rank2=res.data[1].content
+          this.rank3=res.data[2].content
+    })
   },
   watch: {
     $route: "fetchData",
