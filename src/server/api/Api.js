@@ -56,17 +56,38 @@ router.post('/add', (req, res) => {
 	});
 });
 
-router.post('/rank', (req, res) => {
-	var params = req.body
-	console.log(params)
-	conn.query('select * from rank', [params.rankname, params.ranktitle, params.ranknum], function (err, result) {
-	  if (err) {
-		console.log(err)
-	  }
-	  if (result) {
-		jsonWrite(res, result)
-	  }
+//选取话题最长接口
+	router.post('/longdepth',(req,res) => {
+
+	const sel_topic = 'select topic.topicname from topic join paras on topic.id=paras.topic_id order by paras.depth desc limit 3;'
+
+	conn.query(sel_topic, function (error, results) {
+		if (error){
+			console.log(error);
+			return;
+		};
+		console.log('results', results);
+		var b = JSON.stringify(results);
+		res.send(b);
+	});
+
+	
+});
+
+//段落导入接口
+router.post('/getParas',(req,res) => {
+	const para = req.body;
+	const sel_para = $sql.paras.select + " where topic_id = '" + topic.id + "'";
+	// console.log(sel_para);
+
+	conn.query(sel_para, para.id,(error,results) => {
+		if(error){
+			console.log(error);
+		}
+		var a = JSON.stringify(results);
+		res.send(a);
 	})
-  })
+});
+
 
 module.exports = router;

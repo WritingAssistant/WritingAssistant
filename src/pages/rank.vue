@@ -17,11 +17,11 @@
             </div>
             <div class="rank">
               <img src="" alt="" />
-              <h5>点赞数：{{ likes }}</h5>
+              <h5>点赞最多的话题类型：{{ likes }}</h5>
             </div>
             <div class="rank">
               <img src="" alt="" />
-              <h5>被点赞数：{{ likesgot }}</h5>
+              <h5>被点赞数最多的话题类型：{{ likesgot }}</h5>
             </div>
             <div class="rank">
               <img src="" alt="" />
@@ -40,17 +40,17 @@
           </div>
           <div class="cards">
             <div class="cardinfo">
-              <img src="" alt="配图" />
-              <h3 class="cinfo">{{ rank1 }}</h3>
+              <img src="../../assets/gold.png" alt="配图" />
+              <h3 class="cinfo">{{rank1}}</h3>
               <h2 class="ranknum">1</h2>
             </div>
             <div class="cardinfo">
-              <img src="" alt="配图" />
+              <img src="../../assets/sliver.png" alt="配图" />
               <h3 class="cinfo">{{ rank2 }}</h3>
               <h2 class="ranknum">2</h2>
             </div>
             <div class="cardinfo">
-              <img src="" alt="配图" />
+              <img src="../../assets/bronze.png" alt="配图" />
               <h3 class="cinfo">{{ rank3 }}</h3>
               <h2 class="ranknum">3</h2>
             </div>
@@ -69,28 +69,28 @@ import "swiper/swiper-bundle.min.css";
 export default {
   data() {
     return {
-      rank1: "",
-      ranktitle: "",
-      ranknum: "",
+     
       likesgot: "",
       topicnum: "3",
       likes: "",
       formertime: "",
       pic: "",
+      rank1:"",
+     rank2:"",
+      rank3:""
     };
   },
   mounted() {
+    var rank1=rank1
    this.$axios({
-       method: "post",
-            url: "http://127.0.0.1:3000/api/user/rank",
-            data: {
-          
-            },
-          })
-          .then((res) => {
-            console.log(res.data)
-   })
+      method:"post",
+      url:"http://127.0.0.1:3000/api/user/longdepth",
+    }).then((res)=>{
+       console.log(res.data);
+        this.rank1=res.data
+    })
   },
+   
   watch: {
   
     nextParas() {
@@ -257,5 +257,9 @@ main {
   background: linear-gradient(to right top, #5669da, #6cdb);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+.cardinfo img{
+  width:50px;
+  height:50px;
 }
 </style>

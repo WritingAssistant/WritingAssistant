@@ -123,8 +123,23 @@ export default {
       };
     }
     //初始化树结构
+    var treeIndexes = [0];
     this.tree = new Tree();
-    this.tree.append(this.currentPara, this.depth, this.treeIndexes);
+    this.tree.append(this.currentPara, this.depth, treeIndexes);
+    this.$axios({
+      method:"post",
+      url:"http://127.0.0.1:3000/api/user/getParas",
+      data:{
+        id:this.topic_id
+      }
+    }).then((res)=>{
+      console.log(res.data);
+      treeIndexes.push(res.data[0].parent)
+      this.tree.append(res.data[0].content,res.data[0].depth,treeIndexes);
+      this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes);
+      treeIndexes.push(res.data[1].parent)
+      this.tree.append(res.data[1].content,res.data[1].depth,treeIndexes);
+    })
   },
   watch: {
     nextParas() {
@@ -158,6 +173,7 @@ export default {
       ],
       showLine: false,
       editedpara: "",
+      topic_id: 0
     };
   },
 
