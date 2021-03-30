@@ -314,6 +314,9 @@ export default {
 </script>
 
 <style>
+.homepage{
+  margin-top: -50px;
+}
 
 .swiper-container {
   width: 200px;
@@ -344,6 +347,7 @@ export default {
   opacity: 0.2;
 }
 .add {
+  height:35px;
   font-size: 35px;
   margin-top: 90px;
 }
@@ -354,6 +358,7 @@ export default {
   margin-top: 10px;
 }
 .back {
+  height: 30px;
   font-size: 30px;
   margin-top: 90px;
 }
@@ -361,6 +366,8 @@ export default {
   cursor:pointer;
 }
 .finish {
+  width:30px;
+  height:30px;
   font-size: 30px;
   display: none;
   margin-left: 200px;
