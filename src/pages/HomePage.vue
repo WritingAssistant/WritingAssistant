@@ -89,7 +89,7 @@ export default {
       this.root = null; //根节点
       this.current = null; //指针节点，用于找到当前正在浏览的节点位置
       this.append = function (element, depth, treeIndexes) {
-        //append方法：1.生成新节点 2.查找treeIndexes的节点位置 3.把该节点加到treeIndexes的子节点数组里
+        //append方法：1.生成新节点 2.查找当前正在浏览的节点位置 3.把该节点加到正在浏览节点的子节点数组里
         var node = new Node(element, treeIndexes);
         if (!this.root) {
           this.root = node;
@@ -123,9 +123,9 @@ export default {
       };
     }
     //初始化树结构
-    // var treeIndexes = [];
+    var treeIndexes = [0];
     this.tree = new Tree();
-    this.tree.append(this.currentPara, this.depth, [0]);
+    this.tree.append(this.currentPara, this.depth, treeIndexes);
     this.$axios({
       method:"post",
       url:"http://127.0.0.1:3000/api/user/getParas",
@@ -134,27 +134,11 @@ export default {
       }
     }).then((res)=>{
       console.log(res.data);
-      // for (let i = 0; i < res.data.length; i++) {//层数
-      //   treeIndexes.push(0);
-      //   for (let j = 0; j < res.data.length; j++) {//每一层的节点
-      //     treeIndexes[i] = j;
-      //     for (let k = 0; k < res.data.length; k++) {
-      //       if (res.data[k].depth == i && res.data[k].parent == treeIndexes[i]) {
-      //         this.tree.append(res.data[k].content,i,treeIndexes);
-      //       }
-            
-      //     }
-          
-      //   }
-      // }
-      for (let i = 0; i < res.data.length; i++) {
-        let selectIndexes = JSON.parse(res.data[i].selectIndexes)
-        selectIndexes.pop()
-        this.tree.append(res.data[i].content, selectIndexes.length-1,selectIndexes)
-        
-      }
-      // 给nextParas赋值，不然Swiper不显示
-      this.nextParas = this.tree.getNextElement(0,[0])
+      treeIndexes.push(res.data[0].parent)
+      this.tree.append(res.data[0].content,res.data[0].depth,treeIndexes);
+      this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes);
+      treeIndexes.push(res.data[1].parent)
+      this.tree.append(res.data[1].content,res.data[1].depth,treeIndexes);
     })
   },
   watch: {
@@ -189,8 +173,7 @@ export default {
       ],
       showLine: false,
       editedpara: "",
-      topic_id: 0,
-      user:"george"
+      topic_id: 0
     };
   },
 
@@ -204,31 +187,10 @@ export default {
         alert("It's too short! (10 letters at least)")
         return
       }
-      // 添加到暂存树
       this.tree.append(this.newPara, this.depth, this.treeIndexes);
       this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes);
       this.$refs.editingArea.style.display = "none";
       this.$refs.finish.style.display = "none";
-      
-      //添加到数据库
-      let submitIndex = this.treeIndexes.slice(0)
-      submitIndex.push(this.nextParas.length) //新添加元素的下标等于该数组的length
-
-      // 把submitIndex,this.newPara加到数据库即可
-      this.$axios({
-        method:"post",
-        url:"http://127.0.0.1:3000/api/user/addPara",
-        data:{
-          topic_id:this.topic_id,
-          selectIndexes:"["+ submitIndex + "]",
-          content:this.newPara,
-          author:this.user,
-          time:new Date().toISOString().slice(0, 19).replace('T', ' '),
-        }
-      }).then((res)=>{
-        console.log(res);
-      })
-
       this.newPara = "";
     },
     choosePara(index) {
@@ -236,7 +198,9 @@ export default {
       this.treeIndexes.push(index);
       this.currentPara = this.nextParas[index];
       this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes);
+      console.log(this.currentPara);
       this.storyLine.push(this.currentPara);
+      console.log(this.storyLine);
     },
     changeToComments(index) {
       this.chosenpara = this.$router.push({
@@ -273,26 +237,10 @@ export default {
         alert("It's too short! (10 letters at least)")
         return
       }
-      //修改暂存树
       this.tree.change(this.editedpara, this.depth, this.treeIndexes, index);
       this.nextParas[index] = this.editedpara;
       this.edited = !this.edited;
       console.log(this.nextParas);
-
-      //修改数据库
-      let submitIndex = this.treeIndexes.slice(0)
-      submitIndex.push(index) //新添加元素的下标等于该数组的length
-      this.$axios({
-        method:"post",
-        url:"http://127.0.0.1:3000/api/user/changePara",
-        data:{
-          topic_id:this.topic_id,
-          selectIndexes:"["+ submitIndex + "]",
-          content:this.editedpara,
-        }
-      }).then((res)=>{
-        console.log(res);
-      })
     },
     del() {
       this.editedpara = "";
@@ -314,9 +262,6 @@ export default {
 </script>
 
 <style>
-.homepage{
-  margin-top: -50px;
-}
 
 .swiper-container {
   width: 200px;
@@ -347,7 +292,6 @@ export default {
   opacity: 0.2;
 }
 .add {
-  height:35px;
   font-size: 35px;
   margin-top: 90px;
 }
@@ -358,7 +302,6 @@ export default {
   margin-top: 10px;
 }
 .back {
-  height: 30px;
   font-size: 30px;
   margin-top: 90px;
 }
@@ -366,8 +309,6 @@ export default {
   cursor:pointer;
 }
 .finish {
-  width:30px;
-  height:30px;
   font-size: 30px;
   display: none;
   margin-left: 200px;

@@ -8,11 +8,11 @@ var Mysql = {
         select:"select * from topic"
     },
     paras:{
-        add:'insert into paras (topic_id, selectIndexes, content, author, time) values (?,?,?,?,?)' ,
-        select:'select * from paras',
-        change:'update paras set content = '
+        add:'insert into paras (topic_id, depth, parent, content, author, time)',
+        select:'select * from paras'
+    },
 
-    }
+   
 }
 
 module.exports = Mysql;

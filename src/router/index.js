@@ -36,18 +36,30 @@ Vue.use(VueRouter)
             {
                 path: '/me',
                 component: Themes,
+                meta: {
+                    showNavigation: true
+                }
             },
             {
                 path: '/me/Themes',
                 component: Themes,
+                meta: {
+                    showNavigation: true
+                }
             },
             {
                 path: '/me/Reply',
                 component: Reply,
+                meta: {
+                    showNavigation: true
+                }
             },
             {
                 path: '/me/Comments',
                 component: Comments,
+                meta: {
+                    showNavigation: true
+                }
             },
             {
                 path: '/me/Collection',

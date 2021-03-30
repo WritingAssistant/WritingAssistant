@@ -25,8 +25,11 @@ body {
   background-size: cover;
 }
 #app {
-  position: relative;
+  
+  text-align: center;
+  
   width: 100%;
   height: 100%;
+  
 }
 </style>

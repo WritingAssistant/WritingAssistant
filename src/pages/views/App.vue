@@ -18,7 +18,7 @@
           <a @click="redirect('Themes')"><img src="../../icon/icon1.png"/>我的主题</a>
           <a @click="redirect('Reply')"><img src="../../icon/icon2.png"/>我的回复</a>
           <a @click="redirect('Comments')"><img src="../../icon/icon3.png"/>我的评论</a>
-          <a @click="redirect('Collection')"><img src="../../icon/icon4.png"/>我的收藏</a>
+
         </div>
 
       </div>
@@ -34,6 +34,16 @@
 <script>
 const url = require("../../icon/1.png");
 export default {
+  mounted() {
+   this.$axios({
+      method:"post",
+      url:"http://127.0.0.1:3000/api/user/mytopic",
+    }).then((res)=>{
+       console.log(res.data)
+       this.name=res.data[0].username
+       ;
+    })
+  },
   data(){
     return{
         name:"Simon Edwin",
@@ -78,7 +88,7 @@ export default {
     background-color: #BFF1F050;
     border-radius: 16px;
     display: inline-flex;
-    height: 60%;
+    height: 90%;
   }
 
   .main .left{

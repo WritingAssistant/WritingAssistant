@@ -94,8 +94,20 @@ export default {
         this.rank1=res.data[0].topicname
          this.rank2=res.data[1].topicname
           this.rank3=res.data[2].topicname
+    }),
+    
+     this.$axios({
+      method:"post",
+      url:"http://127.0.0.1:3000/api/user/mepost",
+     data:{
+     }
+      }).then((res)=>{
+       console.log(res.data);
+       
     })
+
   },
+   
    
   watch: {
   
@@ -118,11 +130,7 @@ export default {
 </script>
 
 <style >
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
 main {
   min-height: 100vh;
   background: linear-gradient(to right top, #5669da, #6cdb);
@@ -132,8 +140,8 @@ main {
 }
 .glass {
   background: white;
-  min-height: 80vh;
-  width: 70%;
+  min-height: 60vh;
+  width: 80%;
   background: linear-gradient(
     to right bottom,
     rgba(255, 255, 255, 0.6),
@@ -142,11 +150,12 @@ main {
   border-radius: 20px;
   z-index: 2;
   backdrop-filter: blur(2rem);
-  display: flex;
-  position: absolute;
+   display: flex;
+  position: relative;
   left: 50%;
-  top: 50%;
+  top:50%;
   transform: translate(-50%, -50%);
+
 }
 .circle-1,
 .circle-2 {
