@@ -146,7 +146,7 @@ router.post('/addPara',(req,res)=>{
 				console.log(error);
 			}else{
 				console.log(results);
-				res.send(0)  //0表示修改成功
+				res.send("修改成功");
 			}
 			
 		})
