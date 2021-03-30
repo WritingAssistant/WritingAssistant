@@ -26,10 +26,7 @@ body {
 }
 #app {
   position: relative;
-  text-align: center;
-  padding: 25px;
   width: 100%;
   height: 100%;
-  padding: 25px;
 }
 </style>
