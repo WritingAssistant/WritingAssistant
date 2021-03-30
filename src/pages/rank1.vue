@@ -17,11 +17,11 @@
             </div>
             <div class="rank">
               <img src="" alt="" />
-              <h5>点赞最多的话题类型：{{ likes }}</h5>
+              <h5>点赞数：{{ likes }}</h5>
             </div>
             <div class="rank">
               <img src="" alt="" />
-              <h5>被点赞数最多的话题类型：{{ likesgot }}</h5>
+              <h5>被点赞数：{{ likesgot }}</h5>
             </div>
             <div class="rank">
               <img src="" alt="" />
@@ -35,12 +35,13 @@
         </div>
               <div class="info">
           <div class="status">
-            <h3>最受欢迎的话题类型：</h3>
+            <h3>续写小能手：</h3>
+            
           </div>
           <div class="cards">
             <div class="cardinfo">
               <img src="../../assets/gold.png" alt="配图" />
-              <h3 class="cinfo">{{rank1}}</h3>
+              <h3 class="cinfo">{{ rank1 }}</h3>
               <h2 class="ranknum">1</h2>
             </div>
             <div class="cardinfo">
@@ -78,27 +79,26 @@ export default {
       rank3:"",
     };
   },
-  mounted() {
+mounted() {
     var rank1=rank1
     var rank2=rank2
     var rank3=rank3
     var rank=rank
    this.$axios({
       method:"post",
-      url:"http://127.0.0.1:3000/api/user/longdepth",
+      url:"http://127.0.0.1:3000/api/user/biggestauthor",
      data:{
-        rank:this.topicname
+        rank:this.author
       }
     }).then((res)=>{
        console.log(res.data);
-        this.rank1=res.data[0].topicname
-         this.rank2=res.data[1].topicname
-          this.rank3=res.data[2].topicname
+        this.rank1=res.data[0].author
+         this.rank2=res.data[1].author
+          this.rank3=res.data[2].author
     })
   },
-   
   watch: {
-  
+    $route: "fetchData",
     nextParas() {
       this.$nextTick(() => {
         new Swiper(".swiper-container", {
@@ -111,7 +111,6 @@ export default {
       });
     },
     methods: {
-
     }
   },
 };
@@ -263,9 +262,5 @@ main {
   background: linear-gradient(to right top, #5669da, #6cdb);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-.cardinfo img{
-  width:50px;
-  height:50px;
 }
 </style>

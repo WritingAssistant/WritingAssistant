@@ -273,10 +273,26 @@ export default {
         alert("It's too short! (10 letters at least)")
         return
       }
+      //修改暂存树
       this.tree.change(this.editedpara, this.depth, this.treeIndexes, index);
       this.nextParas[index] = this.editedpara;
       this.edited = !this.edited;
       console.log(this.nextParas);
+
+      //修改数据库
+      let submitIndex = this.treeIndexes.slice(0)
+      submitIndex.push(index) //新添加元素的下标等于该数组的length
+      this.$axios({
+        method:"post",
+        url:"http://127.0.0.1:3000/api/user/changePara",
+        data:{
+          topic_id:this.topic_id,
+          selectIndexes:"["+ submitIndex + "]",
+          content:this.editedpara,
+        }
+      }).then((res)=>{
+        console.log(res);
+      })
     },
     del() {
       this.editedpara = "";

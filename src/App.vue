@@ -6,32 +6,30 @@
 </template>
 
 <script>
-import NavigationBar from './components/NavigationBar.vue'
-
+import NavigationBar from "./components/NavigationBar.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    NavigationBar
-  }
-}
+    NavigationBar,
+  },
+};
 </script>
 
 <style>
- body{
+body {
   background: url(../assets/login.jpg) no-repeat;
   align-items: center;
   background-color: var(--white);
   background-attachment: fixed;
   background-size: cover;
 }
-  #app{
-    position:relative;
-
-    padding:25px;
-    width: 100%;
-    height: 100%;
-
-
-  }
+#app {
+  position: relative;
+  text-align: center;
+  padding: 25px;
+  width: 100%;
+  height: 100%;
+  padding: 25px;
+}
 </style>

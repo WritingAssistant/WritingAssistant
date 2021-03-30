@@ -76,6 +76,7 @@ export default {
             data: {
               email: self.form.useremail,
               password: self.form.userpwd,
+                username: self.form.username,
             },
           })
           .then((res) => {
