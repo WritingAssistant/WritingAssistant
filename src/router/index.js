@@ -64,6 +64,9 @@ Vue.use(VueRouter)
             {
                 path: '/me/Collection',
                 component: Collection,
+                meta: {
+                    showNavigation: true
+                }
             },
         ]
     },

@@ -79,7 +79,7 @@ import "swiper/swiper-bundle.min.css";
 export default {
   mounted() {
     function Tree() {
-      //定义结构树类，存储当前话题下全部数据及其结构(模拟数据库)
+      //定义结构树类，存储当前话题下全部数据及其结构(模拟数据库)21.26.14
       var Node = function (element, treeIndexes) {
         //每个节点包含两部分：节点本身数据(字符串)和它的子节点(数组)
         this.element = element;
