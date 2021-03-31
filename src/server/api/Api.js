@@ -57,7 +57,7 @@ router.post('/add', (req, res) => {
 });
 
 //选取话题最长接口
-	router.post('/longdepth', (req, res) => {
+router.post('/longdepth', (req, res) => {
 	const sel_topic = 'select topic.topicname from topic join paras on topic.id=paras.topic_id order by paras.depth desc limit 3;'
 	//到时候要改length(SELECTINDEX)
 	conn.query(sel_topic, function (error, results) {
@@ -73,7 +73,7 @@ router.post('/add', (req, res) => {
 });
 
 //续写话题最多的作者
-	router.post('/biggestauthor', (req, res) => {
+router.post('/biggestauthor', (req, res) => {
 	const sel_author = 'select author,count(*) a from paras group by author having count(author) order by a desc limit 3'
 	conn.query(sel_author, function (error, results) {
 		if (error) {
@@ -85,9 +85,9 @@ router.post('/add', (req, res) => {
 		res.send(c);
 	});
 
-});	
+});
 
-    router.post('/mytopic', (req, res) => {
+router.post('/mytopic', (req, res) => {
 	const sel_author = 'select * from userinfo'
 	conn.query(sel_author, function (error, results) {
 		if (error) {
@@ -103,21 +103,21 @@ router.post('/add', (req, res) => {
 
 //rank左侧与me连接部分
 router.post("/mepost", (req, res) => {
-	const sel_mepost ="select count(*) from userinfo where email ='"+ JSON.parse(localStorage.getItem('email')) + "'" +"group by username"
+	const sel_mepost = "select count(*) from userinfo where email ='" + JSON.parse(localStorage.getItem('email')) + "'" + "group by username"
 
-conn.query(sel_mepost, function (error, results) {
-	if (error) {
-		console.log(error);
-		return;
-	};
-	console.log('results', results);
-	var d = JSON.stringify(results);
-	res.send(d);
-});
+	conn.query(sel_mepost, function (error, results) {
+		if (error) {
+			console.log(error);
+			return;
+		};
+		console.log('results', results);
+		var d = JSON.stringify(results);
+		res.send(d);
+	});
 })
 
 //最新的续写
-	router.post('/newestwriting', (req, res) => {
+router.post('/newestwriting', (req, res) => {
 
 	const sel_new = 'select content from paras order by time desc limit 3'
 
@@ -132,20 +132,48 @@ conn.query(sel_mepost, function (error, results) {
 	});
 });
 
-	//段落导入接口
-	router.post('/getParas', (req, res) => {
-		const para = req.body;
-		const sel_para = $sql.paras.select + " where topic_id = '" + topic.id + "'";
-		// console.log(sel_para);
+//段落导入接口
+router.post('/getParas', (req, res) => {
+	const para = req.body;
+	const sel_para = $sql.paras.select + " where topic_id = '" + para.id + "'";
+	// console.log(sel_para);
 
-		conn.query(sel_para, para.id, (error, results) => {
-			if (error) {
-				console.log(error);
-			}
-			var a = JSON.stringify(results);
-			res.send(a);
-		})
-	});
+	conn.query(sel_para, para.id, (error, results) => {
+		if (error) {
+			console.log(error);
+		}
+		var a = JSON.stringify(results);
+		res.send(a);
+	})
+});
+//段落修改接口
+router.post('/changePara', (req, res) => {
+	const para = req.body;
+	const change_para = $sql.paras.change + para.content + " where topic_id = '" + para.topic_id + "' and selectIndexes ='" + para.selectIndexes + "'";
+	// console.log(sel_para);
 
+	conn.query(change_para, para, (error, results) => {
+		if (error) {
+			console.log(error);
+		} else {
+			console.log(results);
+			res.send("修改成功");
+		}
 
-	module.exports = router;
+	})
+});
+//段落添加接口
+router.post('/addPara',(req,res)=>{
+	    const para = req.body;
+	    const add_para = $sql.paras.add;
+	    conn.query(add_para,[para.topic_id, para.selectIndexes, para.content, para.author, para.time],(err,rst) => {
+	        if(err){
+	            console.log(err);
+	        }else{
+	            console.log(rst);
+	            res.send(0) //0表示添加成功
+	
+	        }
+	    })
+	})
+module.exports = router;
