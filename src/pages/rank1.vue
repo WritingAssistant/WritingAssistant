@@ -1,31 +1,30 @@
 <template>
   <div>
-    <main>
+    <main> 
       <div class="glass">
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
+      
         <div class="dashboard">
           <div class="user">
-            <img src="{{}}" alt="" />
+            <img alt="暂无头像" :src="this.avatar" />
           </div>
 
-          <div class="selfranks">
+           <div class="selfranks">
             <h4>个人记录：</h4>
             <div class="rank">
-              <img src="" alt="" />
+              <img src="../../assets/topic.png" alt="" />
               <h5>我续写过的话题数量：{{ topicnum }}</h5>
             </div>
             <div class="rank">
-              <img src="" alt="" />
-              <h5>点赞数：{{ likes }}</h5>
+              <img src="../../assets/like.png" alt="" />
+              <h5>我点赞了：{{ likes }}</h5>
             </div>
             <div class="rank">
-              <img src="" alt="" />
-              <h5>被点赞数：{{ likesgot }}</h5>
+              <img src="../../assets/likeothers.png" alt="" />
+              <h5>我被点赞：{{ likesgot }}</h5>
             </div>
             <div class="rank">
-              <img src="" alt="" />
-              <h5>最早发布的时间：{{ formertime }}</h5>
+              <img src="../../assets/broadcast.png" alt="" />
+              <h5>发布过的话题：{{ formertime }}</h5>
             </div>
             <div class="more">
               <h4>查看详情：</h4>
@@ -56,6 +55,8 @@
             </div>
           </div>
         </div>
+          <div class="swiper-button-prev" @click="prev()"></div>
+        <div class="swiper-button-next" @click="next()"></div>
       </div>
     </main>
     <div class="circle-1"></div>
@@ -64,7 +65,7 @@
 </template>
 
 <script>
-import Swiper from "swiper/swiper-bundle.min.js";
+
 import "swiper/swiper-bundle.min.css";
 export default {
   data() {
@@ -74,45 +75,83 @@ export default {
       likes: "",
       formertime: "",
       pic: "",
-      rank1:"",
-     rank2:"",
-      rank3:"",
+      rank1: "",
+      rank2: "",
+      rank3: "",
+      avatar: "",
     };
   },
-mounted() {
-    var rank1=rank1
-    var rank2=rank2
-    var rank3=rank3
-    var rank=rank
-   this.$axios({
-      method:"post",
-      url:"http://127.0.0.1:3000/api/user/biggestauthor",
-     data:{
-        rank:this.author
-      }
-    }).then((res)=>{
-       console.log(res.data);
-        this.rank1=res.data[0].author
-         this.rank2=res.data[1].author
-          this.rank3=res.data[2].author
-    })
-  },
-  watch: {
-    $route: "fetchData",
-    nextParas() {
-      this.$nextTick(() => {
-        new Swiper(".swiper-container", {
-          loop: true,
-          navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-          },
-        });
+  mounted() {
+    var rank1 = rank1;
+    var rank2 = rank2;
+    var rank3 = rank3;
+    var rank = rank;
+    this.$axios({
+      method: "post",
+      url: "http://127.0.0.1:3000/api/user/biggestauthor",
+      data: {
+        rank: this.author,
+      },
+    }).then((res) => {
+      console.log(res.data);
+      this.rank1 = res.data[0].author;
+      this.rank2 = res.data[1].author;
+      this.rank3 = res.data[2].author;
+    }),
+      this.$axios({
+        method: "post",
+        url: "http://127.0.0.1:3000/api/user/mepost",
+      }).then((res) => {
+        var loginuser = this.$userMsg;
+        console.log(res.data);
+        for (var i = 0; i < res.data.length; i++) {
+          if (loginuser == res.data[i].email) {
+            this.topicnum = res.data[i].new;
+          }
+          console.log(this.topicnum);
+        }
+      }),
+      this.$axios({
+        method: "post",
+        url: "http://127.0.0.1:3000/api/user/mytopic",
+      }).then((res) => {
+        var loginuser = this.$userMsg;
+        console.log(res.data);
+        for (var i = 0; i < res.data.length; i++) {
+          if (loginuser == res.data[i].email) {
+            this.likes += parseInt(res.data[i].likes);
+            this.likesgot += parseInt(res.data[i].likes_got);
+            this.formertime += res.data[i].topic;
+          }
+          console.log(this.likes);
+          console.log(this.likesgot);
+          console.log(this.formertime);
+        }
+      }),
+      this.$axios({
+        method: "post",
+        url: "http://127.0.0.1:3000/api/user/meavatar",
+      }).then((res) => {
+        var loginuser = this.$userMsg;
+        console.log(res.data);
+        for (var i = 0; i < res.data.length; i++) {
+          if (loginuser == res.data[i].email) {
+            this.avatar = res.data[i].Avatar;
+          }
+          console.log(this.avatar);
+        }
       });
-    },
-    methods: {
-    }
   },
+  
+    methods: {
+      prev() {
+        this.$router.replace("/rank");
+      },
+      next() {
+        this.$router.replace("/rank2");
+      },
+    },
+  
 };
 </script>
 
@@ -189,6 +228,10 @@ main {
   padding: 10px 50px;
   align-items: center;
 }
+.rank img{
+  width:20px;
+  height:20px
+}
 .selfrank h4 {
   color: rgb(68, 83, 219);
   font-weight: 600;
@@ -212,8 +255,8 @@ main {
   flex: 2;
 }
 .swiper-button-prev {
-  position:absolute;
-  left: 50%
+  position: absolute;
+  left: 50%;
 }
 .swiper-button-next {
   right: -5%;
@@ -256,8 +299,8 @@ main {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.cardinfo img{
-  width:50px;
-  height:50px;
+.cardinfo img {
+  width: 50px;
+  height: 50px;
 }
 </style>

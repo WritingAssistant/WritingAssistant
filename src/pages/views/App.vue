@@ -35,21 +35,31 @@
 const url = require("../../icon/1.png");
 export default {
   mounted() {
+   console.log(this.$userMsg)
+   var loginuser=this.$userMsg
    this.$axios({
       method:"post",
       url:"http://127.0.0.1:3000/api/user/mytopic",
     }).then((res)=>{
        console.log(res.data)
-       this.name=res.data[0].username
-       ;
+       for(var i=0;i<res.data.length;i++){
+           if(loginuser==res.data[i].email){ 
+               this.name=res.data[i].username
+               this.email=res.data[i].email}
+               
+       }
+      console.log(this.name)
+    
     })
   },
   data(){
     return{
         name:"Simon Edwin",
         edit:false,
-        Breadcrumb:"Themes",
-        imageUrl: url
+        Breadcrumb:"Theme",
+        imageUrl: url,
+        email:''
+        
     }
   },
   methods:{
@@ -58,6 +68,7 @@ export default {
     },
     showName(){
         this.edit = false;
+        this.changename()
     },
     redirect(param){
         this.Breadcrumb = param;
@@ -77,21 +88,59 @@ export default {
               _that.imageUrl = this.result;
             };
         }
-    }
+    },
+         changename(){
+           
+           console.log(this.email)
+           this.$axios({
+           method:"post",
+           url:"http://127.0.0.1:3000/api/user/changename",
+           data:{
+             email:this.email,
+             name:this.name
+           }
+    }).then((res)=>{
+      switch(res.data){
+        case 0:
+                alert("修改成功!");
+                this.changenamelogin()
+                break;
+              case -1:
+                alert("用户名已存在！")
+                break;
+      }
+
+    })
+         },
+         changenamelogin(){
+               console.log(this.email)
+           this.$axios({
+           method:"post",
+           url:"http://127.0.0.1:3000/api/user/changenamelogin",
+           data:{
+             email:this.email,
+             name:this.name
+           }
+    }).then((res)=>{
+          console.log(res)
+
+    })
+         }
+      
+       
+
+    
   }
 }
 </script>
 
 <style scoped>
   .main{
-    width: 100%;
+    width: 80%;
     background-color: #BFF1F050;
     border-radius: 16px;
     display: inline-flex;
-
     height: 90%;
-
-    height: 100%;
   }
 
   .main .left{

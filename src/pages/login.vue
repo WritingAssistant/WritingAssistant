@@ -42,8 +42,9 @@
 </template>
 
 <script>
-
+import Vue from 'vue'
 export default {
+   
   name: "login-register",
   data() {
     return {
@@ -90,7 +91,7 @@ export default {
               default:
                 alert("登陆成功，快来看看有什么新话题吧！");
                 localStorage.setItem("email", res.data);
-              
+                 Vue.prototype.$userMsg = self.form.useremail
                 setTimeout(() => {
                   this.$router.push("/homepage");
                 }, 1000);

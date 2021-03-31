@@ -101,11 +101,24 @@ router.post('/mytopic', (req, res) => {
 
 });
 
-//rank左侧与me连接部分
+//rank左侧与me连接部分1
 router.post("/mepost", (req, res) => {
-	const sel_mepost = "select count(*) from userinfo where email ='" + JSON.parse(localStorage.getItem('email')) + "'" + "group by username"
-
+	const sel_mepost = "select email,count(*) as 'new' from userinfo group by username"
 	conn.query(sel_mepost, function (error, results) {
+		if (error) {
+			console.log(error);
+			return;
+		};
+		console.log('results', results);
+		var d = JSON.stringify(results);
+		res.send(d);
+	});
+})
+
+//rank左侧头像
+router.post("/meavatar", (req, res) => {
+	const sel_meavatar = "select * from login "
+	conn.query(sel_meavatar, function (error, results) {
 		if (error) {
 			console.log(error);
 			return;
@@ -175,5 +188,54 @@ router.post('/addPara',(req,res)=>{
 	
 	        }
 	    })
+	})
+
+	router.post('/changename',(req,res)=> {
+		const sel_changename='update userinfo set username=? where email=?'
+		const params=req.body
+	    const sel_sql = $sql.user.select + " where username = '" + params.name + "'"
+		console.log(sel_sql)
+		console.log(params.name);
+	    conn.query(sel_sql, params.name, (error, results) => {
+		if (error) {
+			console.log(error);
+		}
+		if (results.length != 0 && params.name == results[0].username) {
+			res.send("-1");   // -1 表示用户名已经存在
+		} else {
+			conn.query(sel_changename,[params.name,params.email],function(error,results){
+				if(error){
+					console.log(error);
+					return;
+				}
+				res.send("0")
+			});
+		}
+	});
+
+	})
+	router.post('/changenamelogin',(req,res)=> {
+		const sel_changenamelogin='update login set username=? where email=?'
+		const params=req.body
+	    const sel_sql = $sql.user.select + " where username = '" + params.name + "'"
+		console.log(sel_sql)
+		console.log(params.name);
+	    conn.query(sel_sql, params.name, (error, results) => {
+		if (error) {
+			console.log(error);
+		}
+		if (results.length != 0 && params.name == results[0].username) {
+			res.send("-1");   // -1 表示用户名已经存在
+		} else {
+			conn.query(sel_changenamelogin,[params.name,params.email],function(error,results){
+				if(error){
+					console.log(error);
+					return;
+				}
+				res.send("success")
+			});
+		}
+	});
+
 	})
 module.exports = router;

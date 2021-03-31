@@ -5,26 +5,26 @@
       
         <div class="dashboard">
           <div class="user">
-            <img src="{{}}" alt="" />
+            <img alt="暂无头像" :src="this.avatar" />
           </div>
 
-          <div class="selfranks">
+         <div class="selfranks">
             <h4>个人记录：</h4>
             <div class="rank">
-              <img src="" alt="" />
+              <img src="../../assets/topic.png" alt="" />
               <h5>我续写过的话题数量：{{ topicnum }}</h5>
             </div>
             <div class="rank">
-              <img src="" alt="" />
-              <h5>点赞最多的话题类型：{{ likes }}</h5>
+              <img src="../../assets/like.png" alt="" />
+              <h5>我点赞了：{{ likes }}</h5>
             </div>
             <div class="rank">
-              <img src="" alt="" />
-              <h5>被点赞数最多的话题类型：{{ likesgot }}</h5>
+              <img src="../../assets/likeothers.png" alt="" />
+              <h5>我被点赞：{{ likesgot }}</h5>
             </div>
             <div class="rank">
-              <img src="" alt="" />
-              <h5>最早发布的时间：{{ formertime }}</h5>
+              <img src="../../assets/broadcast.png" alt="" />
+              <h5>发布过的话题：{{ formertime }}</h5>
             </div>
             <div class="more">
               <h4>查看详情：</h4>
@@ -54,8 +54,8 @@
             </div>
           </div>
         </div>
-         <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
+         <div class="swiper-button-prev" @click="prev()"></div>
+        <div class="swiper-button-next" @click="next()"></div>
       </div>
 
     </main>
@@ -66,19 +66,20 @@
 </template>
 
 <script>
-import Swiper from "swiper/swiper-bundle.min.js";
+
 import "swiper/swiper-bundle.min.css";
 export default {
   data() {
     return {
       likesgot: "",
-      topicnum: "3",
+      topicnum: "",
       likes: "",
       formertime: "",
       pic: "",
       rank1:"",
      rank2:"",
       rank3:"",
+      avatar:""
     };
   },
   mounted() {
@@ -97,26 +98,65 @@ export default {
         this.rank1=res.data[0].topicname
          this.rank2=res.data[1].topicname
           this.rank3=res.data[2].topicname
+    }),
+    
+    this.$axios({
+      method:"post",
+      url:"http://127.0.0.1:3000/api/user/mepost",
+    }).then((res)=>{
+      var loginuser=this.$userMsg
+       console.log(res.data);
+        for(var i=0;i<res.data.length;i++){
+           if(loginuser==res.data[i].email){ 
+              this.topicnum=res.data[i].new
+              }
+          console.log(this.topicnum)      
+       }
+    }),
+    this.$axios({
+      method:"post",
+      url:"http://127.0.0.1:3000/api/user/mytopic",
+    }).then((res)=>{
+      var loginuser=this.$userMsg
+       console.log(res.data);
+        for(var i=0;i<res.data.length;i++){
+           if(loginuser==res.data[i].email){ 
+             
+              this.likes+=parseInt(res.data[i].likes)
+              this.likesgot+=parseInt(res.data[i].likes_got)
+              this.formertime+=res.data[i].topic
+              }
+          console.log(this.likes)
+          console.log(this.likesgot) 
+          console.log(this.formertime)         
+       }
+    }),
+        this.$axios({
+      method:"post",
+      url:"http://127.0.0.1:3000/api/user/meavatar",
+    }).then((res)=>{
+      var loginuser=this.$userMsg
+       console.log(res.data);
+        for(var i=0;i<res.data.length;i++){
+           if(loginuser==res.data[i].email){ 
+              this.avatar=res.data[i].Avatar
+              }
+          console.log(this.avatar)      
+       }
     })
+
+    
   },
    
-  watch: {
-  
-    nextParas() {
-      this.$nextTick(() => {
-        new Swiper(".swiper-container", {
-          loop: true,
-          navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-          },
-        });
-      });
-    },
     methods: {
-
+      prev(){
+        this.$router.replace("/rank2");
+      },
+      next(){
+        this.$router.replace("/rank1");
+      }
     }
-  },
+  
 };
 </script>
 
@@ -187,11 +227,16 @@ main {
   );
   border-radius: 20px;
 }
+
 .rank {
   display: flex;
   margin: 20px 0;
   padding: 10px 50px;
   align-items: center;
+}
+.rank img{
+  width:20px;
+  height:20px
 }
 .selfrank h4 {
   color: rgb(68, 83, 219);
