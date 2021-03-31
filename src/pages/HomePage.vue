@@ -142,9 +142,7 @@ export default {
       //       if (res.data[k].depth == i && res.data[k].parent == treeIndexes[i]) {
       //         this.tree.append(res.data[k].content,i,treeIndexes);
       //       }
-            
       //     }
-          
       //   }
       // }
       for (let i = 0; i < res.data.length; i++) {
