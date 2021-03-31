@@ -157,6 +157,7 @@ export default {
       this.nextParas = this.tree.getNextElement(0,[0])
     })
   },
+    //连接login表
   watch: {
     nextParas() {
       this.$nextTick(() => {
