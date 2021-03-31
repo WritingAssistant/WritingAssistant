@@ -87,6 +87,22 @@ router.post('/add', (req, res) => {
 
 });
 
+//段落添加接口
+router.post('/addPara',(req,res)=>{
+	const para = req.body;
+	const add_para = $sql.paras.add;
+	conn.query(add_para,[para.topic_id, para.selectIndexes, para.content, para.author, para.time],(err,rst) => {
+		if(err){
+			console.log(err);
+		}else{
+			console.log(rst);
+			res.send(0) //0表示添加成功
+
+		}
+	})
+})
+
+
 //最新的续写
 	router.post('/newestwriting', (req, res) => {
 
@@ -106,7 +122,7 @@ router.post('/add', (req, res) => {
 	//段落导入接口
 	router.post('/getParas', (req, res) => {
 		const para = req.body;
-		const sel_para = $sql.paras.select + " where topic_id = '" + topic.id + "'";
+		const sel_para = $sql.paras.select + " where topic_id = '" + para.id + "'";
 		// console.log(sel_para);
 
 		conn.query(sel_para, para.id, (error, results) => {
@@ -118,5 +134,22 @@ router.post('/add', (req, res) => {
 		})
 	});
 
+
+	//段落修改接口
+	router.post('/changePara', (req, res) => {
+		const para = req.body;
+		const change_para = $sql.paras.change + para.content + " where topic_id = '" + para.topic_id + "' and selectIndexes ='" + para.selectIndexes +"'";
+		// console.log(sel_para);
+
+		conn.query(change_para, para, (error, results) => {
+			if (error) {
+				console.log(error);
+			}else{
+				console.log(results);
+				res.send("修改成功");
+			}
+			
+		})
+	});
 
 	module.exports = router;
