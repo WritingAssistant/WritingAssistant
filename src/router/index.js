@@ -14,7 +14,7 @@ import App from '../pages/views/App.vue'
 import Themes from '../pages/views/Themes.vue'
 import Reply from '../pages/views/Reply.vue'
 import Comments from '../pages/views/Comments.vue'
-import Collection from '../pages/views/Collection.vue'
+
 
 Vue.use(VueRouter)
 

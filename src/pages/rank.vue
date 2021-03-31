@@ -1,9 +1,8 @@
 <template>
   <div>
-    <main>
+    <main> 
       <div class="glass">
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
+      
         <div class="dashboard">
           <div class="user">
             <img src="{{}}" alt="" />
@@ -55,10 +54,14 @@
             </div>
           </div>
         </div>
+         <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
       </div>
+
     </main>
     <div class="circle-1"></div>
     <div class="circle-2"></div>
+    
   </div>
 </template>
 
@@ -117,7 +120,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 body {
   margin: 0;
   padding: 0;
@@ -146,7 +149,7 @@ main {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -38%);
   margin-top: 40px;
 }
 .circle-1,
@@ -163,12 +166,12 @@ main {
   border-radius: 50%;
 }
 .circle-1 {
-  right: 10%;
-  top: 8%;
+  right: 8%;
+  top: 18%;
 }
 .circle-2 {
-  left: 10%;
-  bottom: 5%;
+  left: 8%;
+  bottom: -17%;
 }
 .dashboard {
   flex: 1;
@@ -213,7 +216,8 @@ main {
   flex: 2;
 }
 .swiper-button-prev {
-  left: -5%;
+  position:absolute;
+  left: 50%
 }
 .swiper-button-next {
   right: -5%;
@@ -226,19 +230,10 @@ main {
   left: 20%;
 }
 .status {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  padding-bottom: -20px;
 }
-.status input {
-  background: linear-gradient(
-    to right bottom,
-    rgba(255, 255, 255, 0.6),
-    rgba(255, 255, 255, 0.3)
-  );
-  border: none;
-  padding: 6px;
-  width: 60%;
-  border-radius: 20px;
-}
+
 .cards {
   display: flex;
   flex-direction: column;

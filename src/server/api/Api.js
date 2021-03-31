@@ -22,7 +22,7 @@ router.post('/login', (req, res) => {
 			res.send("-1");  // -1 表示查询不到，用户不存在，即邮箱填写错误
 		} else {
 			if (results[0].email == user.email && results[0].password == user.password) {
-				res.send("0");  // 0 表示用户存在并且邮箱密码正确
+				res.send(user.email);  // 0 表示用户存在并且邮箱密码正确
 			} else {
 				res.send("1");  // 1 表示用户存在，但密码不正确
 			}
@@ -58,7 +58,7 @@ router.post('/add', (req, res) => {
 
 //选取话题最长接口
 router.post('/longdepth', (req, res) => {
-	const sel_topic = 'select topic.topicname from topic join paras on topic.id=paras.topic_id order by paras.depth desc limit 3;'
+	const sel_topic = 'select topic.topicname from topic join paras on topic.id=paras.topic_id order by length(selectIndexes) desc limit 3;'
 	//到时候要改length(SELECTINDEX)
 	conn.query(sel_topic, function (error, results) {
 		if (error) {
