@@ -122,7 +122,7 @@ router.post('/add', (req, res) => {
 
 //rank左侧与me连接部分
 router.post("/mepost", (req, res) => {
-	const sel_mepost ="select count(*) from userinfo where email ='"+ localStorage.getItem("email") + "'" +"group by username"
+	const sel_mepost ="select count(*) from userinfo where email ='"+ JSON.parse(localStorage.getItem('email')) + "'" +"group by username"
 
 conn.query(sel_mepost, function (error, results) {
 	if (error) {
