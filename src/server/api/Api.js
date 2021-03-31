@@ -3,8 +3,7 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 const $sql = require('../db/sql');
-const axios = require('axios');
-const { user } = require('../db/sql');
+const axios = require('axios')
 
 const conn = mysql.createConnection(models.mysql);
 conn.connect();
@@ -23,7 +22,7 @@ router.post('/login', (req, res) => {
 			res.send("-1");  // -1 表示查询不到，用户不存在，即邮箱填写错误
 		} else {
 			if (results[0].email == user.email && results[0].password == user.password) {
-				res.send(user.email);  // 2 表示用户存在并且邮箱密码正确
+				res.send("0");  // 0 表示用户存在并且邮箱密码正确
 			} else {
 				res.send("1");  // 1 表示用户存在，但密码不正确
 			}
@@ -59,7 +58,7 @@ router.post('/add', (req, res) => {
 
 //选取话题最长接口
 	router.post('/longdepth', (req, res) => {
-	const sel_topic = 'select topic.topicname from topic join paras on topic.id=paras.topic_id order by length(paras.selectIndexes) desc limit 3;'
+	const sel_topic = 'select topic.topicname from topic join paras on topic.id=paras.topic_id order by paras.depth desc limit 3;'
 	//到时候要改length(SELECTINDEX)
 	conn.query(sel_topic, function (error, results) {
 		if (error) {
@@ -102,7 +101,20 @@ router.post('/add', (req, res) => {
 
 });
 
+//rank左侧与me连接部分
+router.post("/mepost", (req, res) => {
+	const sel_mepost ="select count(*) from userinfo where email ='"+ JSON.parse(localStorage.getItem('email')) + "'" +"group by username"
 
+conn.query(sel_mepost, function (error, results) {
+	if (error) {
+		console.log(error);
+		return;
+	};
+	console.log('results', results);
+	var d = JSON.stringify(results);
+	res.send(d);
+});
+})
 
 //最新的续写
 	router.post('/newestwriting', (req, res) => {
@@ -119,23 +131,6 @@ router.post('/add', (req, res) => {
 		res.send(d);
 	});
 });
-
-//rank左侧与me连接部分
-router.post("/mepost", (req, res) => {
-	const sel_mepost ="select count(*) from userinfo where email ='"+ JSON.parse(localStorage.getItem('email')) + "'" +"group by username"
-
-conn.query(sel_mepost, function (error, results) {
-	if (error) {
-		console.log(error);
-		return;
-	};
-	console.log('results', results);
-	var d = JSON.stringify(results);
-	res.send(d);
-});
-}
-
-	)
 
 	//段落导入接口
 	router.post('/getParas', (req, res) => {

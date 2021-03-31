@@ -42,6 +42,7 @@
 </template>
 
 <script>
+
 export default {
   name: "login-register",
   data() {
@@ -75,7 +76,7 @@ export default {
             data: {
               email: self.form.useremail,
               password: self.form.userpwd,
-              username: self.form.username,
+                username: self.form.username,
             },
           })
           .then((res) => {
@@ -103,7 +104,6 @@ export default {
         alert("填写不能为空！");
       }
     },
-    
     register() {
       const self = this;
       if (
@@ -144,6 +144,8 @@ export default {
 </script>
 
 <style>
+
+
 :root {
   --white: #e9e9e9;
   --gray: #333;
@@ -188,13 +190,14 @@ export default {
 }
 .btitle {
   font-size: 1.8em;
-  padding-bottom: 1em;
+  padding-bottom:1em;
   font-weight: bold;
-  color: whitesmoke;
+  color: whitesmoke
 }
 .bform {
   width: 100%;
   height: 40%;
+  
 
   display: flex;
   flex-direction: column;
@@ -215,7 +218,7 @@ export default {
   border: none;
   outline: none;
   border-radius: 10px;
-  padding-top: 5px;
+  padding-top:5px;
   padding-left: 2em;
   background-color: #f0f0f0;
 }
@@ -226,9 +229,9 @@ export default {
   border: none;
   outline: none;
   background-color: var(--white);
-
+ 
   border: 1px solid var(--blue);
-  color: var(--blue);
+  color:var(--blue);
   font-size: 0.9em;
   cursor: pointer;
 }
