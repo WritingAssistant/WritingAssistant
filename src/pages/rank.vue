@@ -117,7 +117,7 @@ export default {
 };
 </script>
 
-<style >
+<style>
 body {
   margin: 0;
   padding: 0;
@@ -147,6 +147,7 @@ main {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  margin-top: 40px;
 }
 .circle-1,
 .circle-2 {
