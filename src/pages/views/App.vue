@@ -74,11 +74,11 @@ export default {
 
 <style scoped>
   .main{
-    width: 80%;
+    width: 100%;
     background-color: #BFF1F050;
     border-radius: 16px;
     display: inline-flex;
-    height: 60%;
+    height: 100%;
   }
 
   .main .left{
