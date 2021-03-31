@@ -89,6 +89,7 @@ export default {
               default:
                 alert("登陆成功，快来看看有什么新话题吧！");
                 localStorage.setItem("email", res.data);
+              
                 setTimeout(() => {
                   this.$router.push("/homepage");
                 }, 1000);
@@ -102,6 +103,7 @@ export default {
         alert("填写不能为空！");
       }
     },
+    
     register() {
       const self = this;
       if (
