@@ -1,5 +1,9 @@
 <template>
   <div class="homepage">
+    <select name="" id="" class="select" @change="changeTopic($event)">
+      <option style='display: none'></option>
+      <option v-for="topic in topic" :key="topic.id" :value="topic.id">{{topic.topicname}}</option>
+    </select>
     <div class="storyLineContainer">
         <i @click="storyLineShow()" class="iconfont icon-wulianwang-"></i>
       <div class="storyLine" ref="storyLine" v-if="showLine">
@@ -16,7 +20,7 @@
             <br />
           </p>
         </div>
-        <p class="currentPara">{{ currentPara }}</p>
+        <p class="currentPara">{{ currentPara.text }}</p>
       </div>
       <i @click="addPara()" class="iconfont icon-down add"></i>
     </div>
@@ -30,7 +34,11 @@
             class="swiper-slide"
           >
             <div v-if="!edited" class="nextPara" @dblclick="modifyPara(para)">
-              {{ para }}
+              {{ para.text }}
+              <hr>
+              By: {{ para.author }}
+              <br>
+              {{ para.time }}
             </div>
             <textarea
               class="modifying"
@@ -78,84 +86,28 @@ import "swiper/swiper-bundle.min.css";
 
 export default {
   mounted() {
-    function Tree() {
-      //定义结构树类，存储当前话题下全部数据及其结构(模拟数据库)
-      var Node = function (element, treeIndexes) {
-        //每个节点包含两部分：节点本身数据(字符串)和它的子节点(数组)
-        this.element = element;
-        this.next = [];
-        this.treeIndexes = treeIndexes;
-      };
-      this.root = null; //根节点
-      this.current = null; //指针节点，用于找到当前正在浏览的节点位置
-      this.append = function (element, depth, treeIndexes) {
-        //append方法：1.生成新节点 2.查找treeIndexes的节点位置 3.把该节点加到treeIndexes的子节点数组里
-        var node = new Node(element, treeIndexes);
-        if (!this.root) {
-          this.root = node;
-        } else {
-          this.current = this.root;
-          for (let i = 0; i < depth; i++) {
-            //找到当前浏览位置
-            this.current = this.current.next[treeIndexes[i + 1]];
-          }
-          this.current.next.push(node);
-        }
-      };
-      this.getNextElement = function (depth, treeIndexes) {
-        var result = [];
-        this.current = this.root;
-        for (let i = 0; i < depth; i++) {
-          this.current = this.current.next[treeIndexes[i + 1]];
-        }
-        for (let i = 0; i < this.current.next.length; i++) {
-          //提取element
-          result.push(this.current.next[i].element);
-        }
-        return result;
-      };
-      this.change = function (newtext, depth, treeIndexes, index) {
-        this.current = this.root;
-        for (let i = 0; i < depth; i++) {
-          this.current = this.current.next[treeIndexes[i + 1]];
-        }
-        this.current.next[index].element = newtext;
-      };
-    }
-    //初始化树结构
-    // var treeIndexes = [];
-    this.tree = new Tree();
-    this.tree.append(this.currentPara, this.depth, [0]);
+    
+
+    //连接login表,获得当前用户名
     this.$axios({
       method:"post",
-      url:"http://127.0.0.1:3000/api/user/getParas",
+      url:"http://127.0.0.1:3000/api/user/getUser",
       data:{
-        id:this.topic_id
+        email:localStorage.getItem("email"),
       }
     }).then((res)=>{
-      console.log(res.data);
-      // for (let i = 0; i < res.data.length; i++) {//层数
-      //   treeIndexes.push(0);
-      //   for (let j = 0; j < res.data.length; j++) {//每一层的节点
-      //     treeIndexes[i] = j;
-      //     for (let k = 0; k < res.data.length; k++) {
-      //       if (res.data[k].depth == i && res.data[k].parent == treeIndexes[i]) {
-      //         this.tree.append(res.data[k].content,i,treeIndexes);
-      //       }
-      //     }
-      //   }
-      // }
-      for (let i = 0; i < res.data.length; i++) {
-        let selectIndexes = JSON.parse(res.data[i].selectIndexes)
-        selectIndexes.pop()
-        this.tree.append(res.data[i].content, selectIndexes.length-1,selectIndexes)
-        
-      }
-      // 给nextParas赋值，不然Swiper不显示
-      this.nextParas = this.tree.getNextElement(0,[0])
+      this.user = res.data[0].username;
+    });
+    //连接topic表，获取topic name 和 id
+    this.$axios({
+      method:"post",
+      url:"http://127.0.0.1:3000/api/user/getTopic",
+    }).then((res) =>{
+      this.topic = res.data;
     })
+    
   },
-    //连接login表
+    
   watch: {
     nextParas() {
       this.$nextTick(() => {
@@ -179,17 +131,16 @@ export default {
       treeIndexes: [0], //当前正在浏览的节点位置信息(坐标)，用户每次点击子节点时会往该数组里添加一个数(即该子节点的下标)
       newPara: "",
       currentPara:
-        "The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!",
+        {},
       nextParas: [],
       edited: false,
       num: 0,
-      storyLine: [
-        "The baby panda, Dora, was unhappy, because her Milk Tooth is falling out. But she did not want to lose it. One night, Dore heard a strange sound coming from her mouth. Dora ran to look in the mirror. Her tooth was crying!",
-      ],
+      storyLine: [],
       showLine: false,
       editedpara: "",
       topic_id: 0,
-      user:"george"
+      user:"",
+      topic:[]
     };
   },
 
@@ -204,7 +155,7 @@ export default {
         return
       }
       // 添加到暂存树
-      this.tree.append(this.newPara, this.depth, this.treeIndexes);
+      this.tree.append({text:this.newPara,author:this.user,time:new Date().toLocaleDateString()}, this.depth, this.treeIndexes);
       this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes);
       this.$refs.editingArea.style.display = "none";
       this.$refs.finish.style.display = "none";
@@ -235,7 +186,7 @@ export default {
       this.treeIndexes.push(index);
       this.currentPara = this.nextParas[index];
       this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes);
-      this.storyLine.push(this.currentPara);
+      this.storyLine.push(this.currentPara.text);
     },
     changeToComments(index) {
       this.chosenpara = this.$router.push({
@@ -274,9 +225,8 @@ export default {
       }
       //修改暂存树
       this.tree.change(this.editedpara, this.depth, this.treeIndexes, index);
-      this.nextParas[index] = this.editedpara;
+      this.nextParas[index].text = this.editedpara;
       this.edited = !this.edited;
-      console.log(this.nextParas);
 
       //修改数据库
       let submitIndex = this.treeIndexes.slice(0)
@@ -308,6 +258,76 @@ export default {
     storyLineShow() {
       this.showLine = !this.showLine;
     },
+    changeTopic(event){
+    this.topic_id = event.target.value;
+    this.currentPara = {text:this.topic[this.topic_id-1].content}
+    this.storyLine = [];
+    this.storyLine[0] = this.currentPara.text;
+    this.$axios({
+      method:"post",
+      url:"http://127.0.0.1:3000/api/user/getParas",
+      data:{
+        id:this.topic_id,
+      }
+    }).then((res)=>{
+      function Tree() {
+      //定义结构树类，存储当前话题下全部数据及其结构(模拟数据库)
+      var Node = function (element, treeIndexes) {
+        //每个节点包含两部分：节点本身数据(对象)和它的子节点(数组)
+        this.element = element;
+        this.next = [];
+        this.treeIndexes = treeIndexes;
+      };
+      this.root = null; //根节点
+      this.current = null; //指针节点，用于找到当前正在浏览的节点位置
+      this.append = function (element, depth, treeIndexes) {
+        //append方法：1.生成新节点 2.查找treeIndexes的节点位置 3.把该节点加到treeIndexes的子节点数组里
+        var node = new Node(element, treeIndexes);
+        if (!this.root) {
+          this.root = node;
+        } else {
+          this.current = this.root;
+          for (let i = 0; i < depth; i++) {
+            //找到当前浏览位置
+            this.current = this.current.next[treeIndexes[i + 1]];
+          }
+          this.current.next.push(node);
+        }
+      };
+      this.getNextElement = function (depth, treeIndexes) {
+        var result = [];
+        this.current = this.root;
+        for (let i = 0; i < depth; i++) {
+          this.current = this.current.next[treeIndexes[i + 1]];
+        }
+        for (let i = 0; i < this.current.next.length; i++) {
+          //提取element
+          result.push(this.current.next[i].element);
+        }
+        return result;
+      };
+      this.change = function (newtext, depth, treeIndexes, index) {
+        this.current = this.root;
+        for (let i = 0; i < depth; i++) {
+          this.current = this.current.next[treeIndexes[i + 1]];
+        }
+        this.current.next[index].element.text = newtext;
+      };
+    }
+    //初始化树结构
+      this.tree = new Tree();
+      this.tree.append(this.currentPara, this.depth, [0]);
+      console.log(res);
+      for (let i = 0; i < res.data.length; i++) {
+        let selectIndexes = JSON.parse(res.data[i].selectIndexes);
+        selectIndexes.pop();
+        this.tree.append({text:res.data[i].content,author:res.data[i].author,time:new Date(Date.parse(res.data[i].time)).toLocaleDateString()}, selectIndexes.length-1,selectIndexes);
+        
+      }
+      // 给nextParas赋值，不然Swiper不显示
+      this.nextParas = this.tree.getNextElement(0,[0]);
+    });
+    }
   },
 };
 </script>
@@ -474,5 +494,8 @@ export default {
 }
 .icon-wulianwang-:hover{
   cursor: pointer;
+}
+.select{
+  margin-top: 40px;
 }
 </style>

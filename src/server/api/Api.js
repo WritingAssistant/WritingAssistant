@@ -3,7 +3,8 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 const $sql = require('../db/sql');
-const axios = require('axios')
+const axios = require('axios');
+const { connection } = require('mongoose');
 
 const conn = mysql.createConnection(models.mysql);
 conn.connect();
@@ -147,16 +148,17 @@ router.post('/newestwriting', (req, res) => {
 
 //段落导入接口
 router.post('/getParas', (req, res) => {
-	const para = req.body;
-	const sel_para = $sql.paras.select + " where topic_id = '" + para.id + "'";
-	// console.log(sel_para);
+	const topic = req.body;
+	console.log(topic);
+	const sel_para =  $sql.paras.select + " where topic_id ='" + topic.id +"'";
 
-	conn.query(sel_para, para.id, (error, results) => {
+	conn.query(sel_para, topic.id, (error, results) => {
 		if (error) {
 			console.log(error);
+		}else{
+			var a = JSON.stringify(results);
+			res.send(a);
 		}
-		var a = JSON.stringify(results);
-		res.send(a);
 	})
 });
 //段落修改接口
@@ -169,7 +171,6 @@ router.post('/changePara', (req, res) => {
 		if (error) {
 			console.log(error);
 		} else {
-			console.log(results);
 			res.send("修改成功");
 		}
 
@@ -183,8 +184,7 @@ router.post('/addPara',(req,res)=>{
 	        if(err){
 	            console.log(err);
 	        }else{
-	            console.log(rst);
-	            res.send(0) //0表示添加成功
+	            res.send("添加成功")
 	
 	        }
 	    })
@@ -238,4 +238,35 @@ router.post('/addPara',(req,res)=>{
 	});
 
 	})
+
+
+//获取username接口
+router.post('/getUser', (req, res) => {
+	const info = req.body;
+	const sel_para = "select username from login where email = '" + info.email + "'";
+
+	conn.query(sel_para, (error, results) => {
+		if (error) {
+			console.log(error);
+		}else{
+			var username = JSON.stringify(results);
+			res.send(username);
+		}
+	})
+});
+
+//获取topic接口
+router.post('/getTopic',(req, res) => {
+	const sel_topic = "select * from topic";
+
+	conn.query(sel_topic,(error, results) => {
+		if (error) {
+			console.log(error);
+		}else{
+			var topic = JSON.stringify(results);
+			res.send(topic);
+		}
+	})
+})
+
 module.exports = router;
