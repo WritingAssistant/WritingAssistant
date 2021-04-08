@@ -28,7 +28,7 @@
             </div>
             <div class="more">
               <h4>查看详情：</h4>
-              <a href="/me"> <img src="../../assets/rankpic1.png" alt="" /></a>
+              <a href="/me/Themes"> <img src="../../assets/rankpic1.png" alt="" /></a>
             </div>
           </div>
         </div>
@@ -55,8 +55,8 @@
             </div>
           </div>
         </div>
-          <div class="swiper-button-prev" @click="prev()"></div>
-        <div class="swiper-button-next" @click="next()"></div>
+          <div class="swiper-button-prev rankprev" @click="prev()"></div>
+        <div class="swiper-button-next ranknext" @click="next()"></div>
       </div>
     </main>
     <div class="circle-1"></div>
@@ -254,12 +254,12 @@ main {
 .info {
   flex: 2;
 }
-.swiper-button-prev {
-  position: absolute;
-  left: 50%;
+.rankprev{
+  position: fixed;
+  left: 20em !important
 }
-.swiper-button-next {
-  right: -5%;
+.ranknext {
+  right: 0px !important;
 }
 .more img {
   width: 100px;

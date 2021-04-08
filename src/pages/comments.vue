@@ -10,8 +10,8 @@
         rows="10"
       ></textarea>
       <button class="comBtn" @click="insertComment">Submit</button>
-      <div>评论留言：</div><hr>
-      <div v-for="(comment,index) in comments" :key="index">{{comment.comment}}                                     {{comment.date}}</div>
+      <div class="font"  >评论留言：</div><hr>
+      <div class="font"  v-for="(comment,index) in comments" :key="index">{{comment.comment}}                                  {{comment.date}}</div>
   </div>
 </template>
 <script>
@@ -63,5 +63,8 @@ export default {
 }
 .comBtn{
   display: block
+}
+.font{
+  color:white
 }
 </style>

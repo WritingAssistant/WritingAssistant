@@ -32,7 +32,7 @@
 </template>
 
 <script>
-const url = require("../../icon/1.png");
+const url = require("../../../assets/default.jpg");
 export default {
   mounted() {
    console.log(this.$userMsg)

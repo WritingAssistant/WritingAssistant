@@ -32,7 +32,8 @@
             </div>
           </div>
         </div>
-              <div class="info">
+          <div class="info">
+              <div class="swiper-button-prev rankprev" @click="prev()"></div>
           <div class="status">
             <h3>最受欢迎的话题类型：</h3>
           </div>
@@ -53,9 +54,10 @@
               <h2 class="ranknum">3</h2>
             </div>
           </div>
+            <div class="swiper-button-next ranknext" @click="next()"></div>
         </div>
-         <div class="swiper-button-prev" @click="prev()"></div>
-        <div class="swiper-button-next" @click="next()"></div>
+       
+      
       </div>
 
     </main>
@@ -160,7 +162,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 body {
   margin: 0;
   padding: 0;
@@ -260,19 +262,19 @@ main {
 .info {
   flex: 2;
 }
-.swiper-button-prev {
-  position:absolute;
-  left: 50%
+.rankprev{
+  position: fixed;
+  left: 20em !important
 }
-.swiper-button-next {
-  right: -5%;
+.ranknext {
+  right: 0px !important;
 }
 .more img {
   width: 100px;
   height: 100px;
   position: absolute;
-  top: 78%;
-  left: 20%;
+  top: 30em;
+  left: 10em;
 }
 .status {
   margin-bottom: 10px;
