@@ -261,10 +261,12 @@ main {
   flex: 2;
 }
 .swiper-button-prev {
+  color: white;
   position:absolute;
-  left: 50%
+  left:-55px;
 }
 .swiper-button-next {
+  color: white;
   right: -5%;
 }
 .more img {

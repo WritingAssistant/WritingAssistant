@@ -140,20 +140,30 @@ export default {
       editedpara: "",
       topic_id: 0,
       user:"",
-      topic:[]
+      topic:[],
+      adding:false,
     };
   },
 
   methods: {
     addPara() {
-      this.$refs.editingArea.style.display = "block";
-      this.$refs.finish.style.display = "block";
+      if(this.adding==false){
+        this.$refs.editingArea.style.display = "block";
+        this.$refs.finish.style.display = "block";
+        this.adding=!this.adding
+      }else{
+        this.$refs.editingArea.style.display = "none";
+        this.$refs.finish.style.display = "none";
+        this.adding=!this.adding
+      }
+      
     },
     submit() {
       if (this.newPara.length<10) {
         alert("It's too short! (10 letters at least)")
         return
       }
+      this.adding=false;
       // 添加到暂存树
       this.tree.append({text:this.newPara,author:this.user,time:new Date().toLocaleDateString()}, this.depth, this.treeIndexes);
       this.nextParas = this.tree.getNextElement(this.depth, this.treeIndexes);
@@ -192,7 +202,7 @@ export default {
       this.chosenpara = this.$router.push({
         path: "/comments",
         query: {
-          Chosentest: this.nextParas[index],
+          Chosentest: this.nextParas[index].text,
         },
       });
     },
@@ -332,7 +342,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .homepage{
   margin-top: -50px;
 }
@@ -410,6 +420,7 @@ export default {
   margin-left: -20px;
 }
 .currentPara {
+  position: relative;
   z-index: 999;
   border: 1px white solid;
   width: 300px;
@@ -479,7 +490,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  height: 545px;
+  height: 800px;
   overflow: auto;
   margin-left: 20px;
 }
@@ -496,6 +507,13 @@ export default {
   cursor: pointer;
 }
 .select{
-  margin-top: 40px;
+  position:relative;
+  left:700px;
+  top:50px;
+  width:100px;
+  height:30px;
+  border-radius:10px;
+  background: transparent;
 }
+
 </style>
