@@ -262,6 +262,7 @@ main {
 .info {
   flex: 2;
 }
+
 .rankprev{
   position: fixed;
   left: 20em !important

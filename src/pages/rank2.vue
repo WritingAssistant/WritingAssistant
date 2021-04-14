@@ -252,12 +252,14 @@ main {
 .info {
   flex: 2;
 }
+
 .rankprev{
   position: fixed;
   left: 20em !important
 }
 .ranknext {
   right: 0px !important;
+
 }
 .more img {
   width: 100px;
