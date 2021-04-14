@@ -3,7 +3,8 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 const $sql = require('../db/sql');
-const axios = require('axios')
+const axios = require('axios');
+const { connection } = require('mongoose');
 
 const conn = mysql.createConnection(models.mysql);
 conn.connect();
@@ -150,7 +151,10 @@ router.post('/getParas', (req, res) => {
 	const topic = req.body;
 	console.log(topic);
 	const sel_para =  $sql.paras.select + " where topic_id ='" + topic.id +"'";
+<<<<<<< HEAD
 	console.log(sel_para);
+=======
+>>>>>>> f02af37979e3c484e63a0abe6e1bb25d063f94b4
 
 	conn.query(sel_para, topic.id, (error, results) => {
 		if (error) {
@@ -171,7 +175,6 @@ router.post('/changePara', (req, res) => {
 		if (error) {
 			console.log(error);
 		} else {
-			console.log(results);
 			res.send("修改成功");
 		}
 
@@ -185,8 +188,12 @@ router.post('/addPara',(req,res)=>{
 	        if(err){
 	            console.log(err);
 	        }else{
+<<<<<<< HEAD
 	            console.log(rst);
 	            res.send("添加成功") //0表示添加成功
+=======
+	            res.send("添加成功")
+>>>>>>> f02af37979e3c484e63a0abe6e1bb25d063f94b4
 	
 	        }
 	    })
@@ -257,4 +264,21 @@ router.post('/getUser', (req, res) => {
 	})
 });
 
+<<<<<<< HEAD
+=======
+//获取topic接口
+router.post('/getTopic',(req, res) => {
+	const sel_topic = "select * from topic";
+
+	conn.query(sel_topic,(error, results) => {
+		if (error) {
+			console.log(error);
+		}else{
+			var topic = JSON.stringify(results);
+			res.send(topic);
+		}
+	})
+})
+
+>>>>>>> f02af37979e3c484e63a0abe6e1bb25d063f94b4
 module.exports = router;
